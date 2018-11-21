@@ -1,0 +1,35 @@
+<!doctype html>
+<html ng-app="app">
+<head>
+    <meta charset="utf=8">
+    <title>Blog</title>
+</head>
+<body>
+<div ng-controller='myCtrl'>
+    <h1>{{titleTwo}}</h1>
+    <form method="GET" action="/add">
+        <p>Имя:</p>
+        <input type="text" name="name">
+        <p>Email:</p>
+        <input type="text" name="email">
+        <p>Пароль:</p>
+        <input type="text" name="passsword">
+        <p>Пароль еще раз:</p>
+        <input type="text" name="passswordagain">
+        <p></p>
+        <button type="submit" name="toEntry" value="toEntry"> Вход </button>
+        <button type="submit" name="regestration" value="regestration"> Регистрация </button>
+    </form>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"> </script>
+<script type="text/javascript" src="main.js"></script>
+<script>
+    angular.module('app',[]).controller('myCtrl', function ($scope) {
+        $scope.title = "Вход";
+        $scope.titleTwo = "Регистрация";
+    });
+</script>
+</body>
+</html>
