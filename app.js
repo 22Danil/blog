@@ -7,8 +7,9 @@ var express = require("express");
 
 var app = express();
 
-app.get("/", contr.entry);
-app.get("/toRegestration", contr.toRegistration);
+app.get("/", contr.entryForm);
+app.get("/toRegOrEnt", contr.toRegOrEnt);
+app.get("/regestration", contr.registration);
 
 
 
