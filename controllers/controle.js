@@ -38,7 +38,7 @@ module.exports = {
         let sault = Math.random().toString (36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
         let sha256 = crypto.createHash("sha256");
         sha256.update(request.query.passsword + sault, "utf-8");
-        db.user.create({firstName:request.query.name, email:request.query.email, password:sha256.digest("base64"), sault:sault});
+        await db.user.create({firstName:request.query.name, email:request.query.email, password:sha256.digest("base64"), sault:sault});
         /*console
         db.Person.create({firstName:request.query.firstN, lastName: request.query.lastN, number:request.query.Num});
         response.redirect("/", 302)

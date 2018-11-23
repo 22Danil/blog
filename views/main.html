@@ -1,20 +1,46 @@
 <!doctype html>
 <html ng-app="app">
 <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.5/angular.min.js"> </script>
     <meta charset="utf=8">
     <title>Blog</title>
 </head>
 <body>
 <div ng-controller='myCtrl'>
-    <h1>{{title}}</h1>
+        <div ng-repeat="book in books">
+            {{book.name}}
+        </div>
 </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"> </script>
-<script type="text/javascript" src="main.js"></script>
 <script>
-    angular.module('app',[]).controller('myCtrl', function ($scope) {
-        $scope.title = "Вы вошли"
-    });
-</script>
+    var app = angular.module('app',[]);
+        /*
+       $http.get('http://localhost:8000/books').then(data => {
+           console.log(data);
+           $scope.books = data;
+       })
+       */
+        app.controller('myCtrl', function ($http, $scope) {
+        $http.get('http://localhost:8000/books')
+            .then(function (result) {
+                console.log('sucess', result);
+                $scope.books = result.data;
+            })
+            .catch(function (result) {
+                console.log(result)
+            })
+           /*
+           .success(function (result) {
+               console.log('sucess', result);
+               $scope.books = result;
+           })
+           .error(function (result) {
+               console.log('error')
+           })
+           */
+    });//
+
+    </script>
+
 </body>
 </html>
