@@ -10,7 +10,7 @@ var express = require("express");
 
 var app = express();
 
-//
+/*
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
@@ -25,19 +25,18 @@ var books = [
     {name: "asdf"
     }
 ];
+*/
 
-app.get('/books', function(req, res){
-   res.send(books);
-});
+app.get('/books', contr.book);
 
-app.get('/main', function(req, res){
-    res.sendFile(path.join(__dirname + "/views/main.html"));
-});
+//app.get('/main', function(req, res){
+    //res.sendFile(path.join(__dirname + "/views/main.html"));
+//});
 
 //
-//app.get("/", contr.entryForm);
-//app.get("/toRegOrEnt", contr.toRegOrEnt);
-//app.get("/regestration", contr.registration);
+app.get("/", contr.entryForm);
+app.get("/toRegOrEnt", contr.toRegOrEnt);
+app.get("/regestration", contr.registration);
 
 
 

@@ -11,13 +11,19 @@ module.exports = {
     toRegOrEnt: async function(request, response){
         if(request.query.click_button === "entry") {
 
+            //response.sendFile(path.join(__dirname + "/../views/main.html"));
+            /*
             let result = await db.user.findAll({
                 where:{firstName:request.query.name}
             });
             if(result.length === 0){
                 console.log("sdf");
             }
-            console.log(result);
+            else{
+                response.send(result);
+            }
+            */
+            //console.log(result);
 
             //console.log(result[0].dataValues.password);
 
@@ -52,7 +58,10 @@ module.exports = {
         console.log(salt);
         */
     },
-    entry: async function(request, response){
+    book: async function(request, response){
+        let result = await db.user.findAll();
+
+        response.send(result);
 
     }
 

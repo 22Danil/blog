@@ -1,8 +1,8 @@
 {
   "development": {
-    "username": "bloguser",
+    "username": "daniluser",
     "password": "wikiveer1997",
-    "database": "blog_db",
+    "database": "mynodeproject_db",
     "host": "localHost",
     "dialect": "postgres"
   }
