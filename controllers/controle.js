@@ -8,9 +8,12 @@ module.exports = {
     entryForm: async function(request, response){
         response.sendFile(path.join(__dirname + "/../views/template.html"));
     },
-    toRegOrEnt: async function(request, response){
-        if(request.query.click_button === "entry") {
-
+    posts: async function(request, response){
+        console.log(request.query.id );
+        let result = await db.post.findAll();
+        response.send(result);
+    },
+    Entry: async function(request, response){
             //response.sendFile(path.join(__dirname + "/../views/main.html"));
             /*
             let result = await db.user.findAll({
@@ -35,10 +38,8 @@ module.exports = {
 
 
             response.sendFile(path.join(__dirname + "/../views/main.html"));
-        }
-        else{
-            response.sendFile(path.join(__dirname + "/../views/regestration.html"));
-        }
+
+
     },
     registration: async function(request, response){
         let sault = Math.random().toString (36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
@@ -63,6 +64,10 @@ module.exports = {
 
         response.send(result);
 
+    },
+    test: async function(request, response){
+        console.log("Middleware 1");
+        console.log(request);
     }
 
 

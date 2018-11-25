@@ -3,12 +3,13 @@
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.5/angular.min.js"> </script>
     <meta charset="utf=8">
+    <base href="/" />
     <title>Blog</title>
 </head>
 <body>
 <div ng-controller='myCtrl'>
         <div ng-repeat="book in books">
-            {{book.firstName}}
+            {{book.postText}}
         </div>
 </div>
 
@@ -20,8 +21,13 @@
            $scope.books = data;
        })
        */
-        app.controller('myCtrl', function ($http, $scope) {
-        $http.get('http://localhost:8000/books')
+    app.config(function($locationProvider) {
+        $locationProvider.html5Mode(true);
+    });
+        app.controller('myCtrl', function ($http, $scope, $location) {
+            localStorage.setItem('myKey', 'Value');
+            console.log($location.search().name);
+        $http.get('http://localhost:2000/posts',{params:{id:$location.search().name}})
             .then(function (result) {
                 console.log('sucess', result);
                 $scope.books = result.data;

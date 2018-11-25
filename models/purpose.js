@@ -6,6 +6,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   purpose.associate = function(models) {
     // associations can be defined here
+      purpose.belongsTo(models.user);
+      purpose.belongsTo(models.role);
   };
   return purpose;
 };
