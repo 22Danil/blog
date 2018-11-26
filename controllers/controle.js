@@ -10,7 +10,11 @@ module.exports = {
     },
     posts: async function(request, response){
         console.log(request.query.id );
-        let result = await db.post.findAll();
+        let result = await db.post.findAll({
+            where:{
+                firstName:request.query.name
+            }
+        });
         response.send(result);
     },
     Entry: async function(request, response){

@@ -2,51 +2,54 @@
 <html ng-app="app">
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.5/angular.min.js"> </script>
+    <script src="scripts.js"> </script>
     <meta charset="utf=8">
     <base href="/" />
     <title>Blog</title>
+    <style type="text/css">
+        body { margin: 0; }
+        #sidebar, #content { position: absolute; }
+        #sidebar, #content { overflow: auto; padding: 10px; }
+        #header {
+            height: 80px; /* Высота слоя */
+            background: #FEDFC0; border-bottom: 2px solid #7B5427;
+        }
+        #header h1 { padding: 20px; margin: 0; }
+        #sidebar {
+            width: 150px; background: #ECF5E4; border-right: 1px solid #231F20;
+            top: 82px; /* Расстояние от верхнего края */
+            bottom: 0; /* Расстояние снизу  */
+        }
+        #content {
+            top: 82px; /* Расстояние от верхнего края */
+            left: 570px; /* Расстояние от левого края */
+            bottom: 0; right: 0;
+        }
+    </style>
 </head>
 <body>
-<div ng-controller='myCtrl'>
+
+<div ng-controller="myCtrl" >
+
+    <div>
+        <h1>Добро пожаловать {{user_name}}</h1>
+        <input type="button" ng-click="addBook()" value="Мои записи">
+        <p></p>
+        <input type="button" ng-click="" value="Все записи">
+        <p></p>
+        <input type="button" ng-click="" value="Поиск">
+    </div>
+
+    <div id="content">
         <div ng-repeat="book in books">
-            {{book.postText}}
+            <textarea rows="5" cols="45" name={{book.id}} ng-disabled="false" ng-model="book.postText" class="multi-files"></textarea>
+            <input type="button" name={{book.id}} ng-click="edit(book.id)" value="Изменить">
+            <input type="button" ng-click="" value="Сохранить">
+            <input type="button" ng-click="" value="Удалить">
         </div>
+    </div>
 </div>
 
-<script>
-    var app = angular.module('app',[]);
-        /*
-       $http.get('http://localhost:8000/books').then(data => {
-           console.log(data);
-           $scope.books = data;
-       })
-       */
-    app.config(function($locationProvider) {
-        $locationProvider.html5Mode(true);
-    });
-        app.controller('myCtrl', function ($http, $scope, $location) {
-            localStorage.setItem('myKey', 'Value');
-            console.log($location.search().name);
-        $http.get('http://localhost:2000/posts',{params:{id:$location.search().name}})
-            .then(function (result) {
-                console.log('sucess', result);
-                $scope.books = result.data;
-            })
-            .catch(function (result) {
-                console.log(result)
-            })
-           /*
-           .success(function (result) {
-               console.log('sucess', result);
-               $scope.books = result;
-           })
-           .error(function (result) {
-               console.log('error')
-           })
-           */
-    });//
-
-    </script>
 
 </body>
 </html>

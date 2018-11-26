@@ -26,8 +26,11 @@ var books = [
     }
 ];
 */
+app.use("/entryOrRegistration", express.static(__dirname + "/views"));
+
 
 app.get('/posts', contr.posts);
+//app.post('/posts', contr.set_posts);
 
 //app.get('/main', function(req, res){
     //res.sendFile(path.join(__dirname + "/views/main.html"));
