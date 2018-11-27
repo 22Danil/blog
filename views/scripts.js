@@ -11,19 +11,21 @@ app.config(function($locationProvider) {
 });
 
 app.controller('myCtrl', function ($http, $scope, $location) {
+    //console.log(test);
     //localStorage.setItem('myKey', 'Value');
     //1console.log($location.search().name);
     //$scope.sample1=function(){
-    /*
-    $http.get('http://localhost:2000/posts', {params: {id: $location.search().name}})
-        .then(function (result) {
-            console.log('sucess', result);
-            $scope.books = result.data;
+
+    $http.get('http://localhost:2000/token')
+        .then(function (result1) {
+            console.log('sucess', result1);
+            $scope.tokenUser = result1.data.token;
+            $scope.nameUser = result1.data.Name;
         })
         .catch(function (result) {
             console.log(result)
         });
-        */
+
     $scope.user_name = $location.search().name;
     $scope.addBook = function () {
         $http.get('http://localhost:2000/posts', {params: {name: $location.search().name}})

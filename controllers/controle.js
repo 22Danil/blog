@@ -1,5 +1,6 @@
 db = require(__dirname + "//..//models//index");
-
+const jwt = require('jsonwebtoken');
+const secret = 'shhhhh';
 //test = require(__dirname + "/../views");
 var crypto = require("crypto");
 var path    = require("path");
@@ -39,8 +40,12 @@ module.exports = {
 
             //console.log(sha256.digest("base64"));
 
+            // шифрование
+            //const token = jwt.sign({ foo: 'bar' }, secret);
 
-
+            //console.log(token);
+            //response.redirect("/token?tok=" + token + "&name="+request.query.name, 302);
+            //response.send(tok="1", path.join(__dirname + "/../views/main.html"));
             response.sendFile(path.join(__dirname + "/../views/main.html"));
 
 

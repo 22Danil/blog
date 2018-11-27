@@ -10,23 +10,15 @@ let express = require("express");
 
 let app = express();
 
-/*
+app.use(express.static(__dirname + "/views"));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
 
-app.use(cors());
+//app.use("/token", express.static(__dirname + "/views"));
 
-var books = [
-    {
-    name: "qwer"
-    },
-    {name: "asdf"
-    }
-];
-*/
-app.use("/entryOrRegistration", express.static(__dirname + "/views"));
 
 
 app.get('/posts', contr.posts);
@@ -35,18 +27,28 @@ app.get('/posts', contr.posts);
 //app.get('/main', function(req, res){
     //res.sendFile(path.join(__dirname + "/views/main.html"));
 //});
+app.get("/token", function (request, response){
+
+    //response.sendFile(path.join(__dirname + "/views/main.html"));
+
+    response.send({token:"1", Name:"aa"})
+
+});
 
 app.get("/", contr.entryForm);
 //app.use("/",function(request, response, next){
     //response.sendFile(path.join(__dirname + "/views/template.html"));
     //next();
 //});
-app.use("/entryOrRegistration", function (request, response) {
-    if(request.query.click_button === "toRegistration"){
+app.post("/entryOrRegistration", function (request, response) {
+    //console.log(request);
+    if(request.body.click_button === "toRegistration"){
         response.sendFile(path.join(__dirname + "/views/registration.html"));
     }
     else{
-        response.sendFile(path.join(__dirname + "/views/main.html"));
+        //response.redirect();
+        contr.Entry(request, response);
+        //response.sendFile(path.join(__dirname + "/views/main.html"));
     }
 
 });
