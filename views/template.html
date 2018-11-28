@@ -8,15 +8,16 @@
         <title>Blog</title>
     </head>
     <body>
+
         <div ng-controller='myCtrl'>
             <h1>{{title}}</h1>
             <div>
                 <p>Имя:</p>
-                <input type="text" name="name" ng-model="Name">
+                <input type="text" name="name" ng-model="Name">{{err_log}}
                 <p>Email:</p>
                 <input type="text" name="email" ng-model="Email">
                 <p>Пароль:</p>
-                <input type="text" name="passsword" ng-model="Password">
+                <input type="text" name="passsword" ng-model="Password" >{{err_pas}}
                 <p></p>
                 <button type="submit" name="click_button" value="entry" ng-click="entry()"> Вход </button>
                 <button type="submit" name="click_button" value="toRegistration" ng-click="registration()"> Регистрация </button>

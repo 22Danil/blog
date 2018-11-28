@@ -1,8 +1,10 @@
 //bower install angular#1.2.32
-var cors = require('cors');
+
+db = require(__dirname + "/models/index");
 var bodyParser = require('body-parser');
 //npm install angular@1.2.32
 var path    = require("path");
+var crypto = require("crypto");
 
 const contr = require(__dirname + '/controllers/controle');
 
@@ -27,6 +29,31 @@ app.get('/posts', contr.posts);
 //app.get('/main', function(req, res){
     //res.sendFile(path.join(__dirname + "/views/main.html"));
 //});
+app.use("/entry", async function (request, response){
+    let sha256 = crypto.createHash("sha256");
+    /*
+     let sault = Math.random().toString (36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        sha256.update(request.query.passsword + sault, "utf-8");
+        await db.user.create({firstName:request.query.name, email:request.query.email, password:sha256.digest("base64"), sault:sault});
+        */
+    let result = await db.user.findAll({
+        where:{
+            firstName:request.body.name,
+        }
+    });
+    if(result.length === 0){
+        response.send("error_login");
+    }
+    else if(sha256.update(request.body.password + result[0].sault, "utf-8").digest("base64") !== result[0].password){
+        response.send("error_password");
+    }
+    else {
+        contr.Entry(request, response);
+    }
+    //console.log(result)
+
+});
+
 app.get("/token", function (request, response){
 
     //response.sendFile(path.join(__dirname + "/views/main.html"));
@@ -35,22 +62,14 @@ app.get("/token", function (request, response){
 
 });
 
+
 app.get("/", contr.entryForm);
 //app.use("/",function(request, response, next){
     //response.sendFile(path.join(__dirname + "/views/template.html"));
     //next();
 //});
-app.post("/entryOrRegistration", function (request, response) {
-    //console.log(request);
-    if(request.body.click_button === "toRegistration"){
+app.get("/entryOrRegistration", function (request, response) {
         response.sendFile(path.join(__dirname + "/views/registration.html"));
-    }
-    else{
-        //response.redirect();
-        contr.Entry(request, response);
-        //response.sendFile(path.join(__dirname + "/views/main.html"));
-    }
-
 });
 
 //app.get("/", contr.entryForm);

@@ -19,6 +19,22 @@ module.exports = {
         response.send(result);
     },
     Entry: async function(request, response){
+
+            let result = await db.role.findAll({
+                attributes:['nomination'],
+                where:{
+                    id:7
+                },
+                include:[{
+                    model:db.porpuse,
+                    where:{
+                        userId:7
+                    }
+                }]
+            });
+
+
+            console.log(result);
             //response.sendFile(path.join(__dirname + "/../views/main.html"));
             /*
             let result = await db.user.findAll({
@@ -46,7 +62,7 @@ module.exports = {
             //console.log(token);
             //response.redirect("/token?tok=" + token + "&name="+request.query.name, 302);
             //response.send(tok="1", path.join(__dirname + "/../views/main.html"));
-            response.sendFile(path.join(__dirname + "/../views/main.html"));
+            //response.sendFile(path.join(__dirname + "/../views/main.html"));
 
 
     },
