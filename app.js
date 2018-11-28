@@ -57,9 +57,4 @@ app.post("/entryOrRegistration", function (request, response) {
 //app.get("/toRegOrEnt", contr.toRegOrEnt);
 app.get("/registration", contr.registration);
 
-
-
-
 app.listen(2000);
-
-//<input type="text" name="name" ng-model="hello" value=hello>
