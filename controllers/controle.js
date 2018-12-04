@@ -4,6 +4,10 @@ const secret = 'shhhhh';
 //test = require(__dirname + "/../views");
 var crypto = require("crypto");
 var path    = require("path");
+var bodyParser = require('body-parser');
+
+
+
 
 module.exports = {
     entryForm: async function(request, response){
@@ -18,8 +22,29 @@ module.exports = {
         });
         response.send(result);
     },
-    Entry: async function(request, response){
+    Entry: async function(request, response, userResult){
+            let role = "";
 
+            await db.porpuse.findAll({
+               where:{
+                   userId:userResult.dataValues.id
+               }
+            })
+                .then(function (result) {
+                    role = db.role.findAll({
+                        attributes:['nomination'],
+                        where:{
+                            id:result.dataValues.nominationId
+                        }
+                    })
+
+                })
+                .catch(function (result){
+                    console.log(result);
+                });
+
+            console.log(role);
+            /*
             let result = await db.role.findAll({
                 attributes:['nomination'],
                 where:{
@@ -32,9 +57,9 @@ module.exports = {
                     }
                 }]
             });
+            */
 
 
-            console.log(result);
             //response.sendFile(path.join(__dirname + "/../views/main.html"));
             /*
             let result = await db.user.findAll({
@@ -68,9 +93,19 @@ module.exports = {
     },
     registration: async function(request, response){
         let sault = Math.random().toString (36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-        let sha256 = crypto.createHash("sha256");
-        sha256.update(request.query.passsword + sault, "utf-8");
-        await db.user.create({firstName:request.query.name, email:request.query.email, password:sha256.digest("base64"), sault:sault});
+        //let sha256 = crypto.createHash("sha256");
+        //sha256.update(request.query.passsword + sault, "utf-8");
+        console.log(request.body.passsword);
+        //let passwordHash = require("crypto").createHash("sha256").update(request.body.password + sault).digest("base64");
+        await db.user.create({firstName:request.body.name, email:request.body.email, password:require("crypto").createHash("sha256").update(request.body.password + sault).digest("base64"), sault:sault})
+            .then(function (result) {
+                //console.log(result);
+                db.porpuse.create({nominationId:2, userId:result.dataValues.id});
+
+            })
+            .catch(function (result) {
+                console.log(result)
+            });
         /*console
         db.Person.create({firstName:request.query.firstN, lastName: request.query.lastN, number:request.query.Num});
         response.redirect("/", 302)
