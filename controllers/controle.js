@@ -96,8 +96,13 @@ module.exports = {
         //let sha256 = crypto.createHash("sha256");
         //sha256.update(request.query.passsword + sault, "utf-8");
         console.log(request.body.passsword);
+<<<<<<< HEAD
         //let passwordHash = require("crypto").createHash("sha256").update(request.body.password + sault).digest("base64");
         await db.user.create({firstName:request.body.name, email:request.body.email, password:require("crypto").createHash("sha256").update(request.body.password + sault).digest("base64"), sault:sault})
+=======
+        let passwordHash = require("crypto").createHash("sha256").update(request.body.passsword.toString() + sault).digest("base64");
+        await db.user.create({firstName:request.body.name, email:request.body.email, password:require("crypto").createHash("sha256").update(request.body.passsword + sault).digest("base64"), sault:sault})
+>>>>>>> master
             .then(function (result) {
                 //console.log(result);
                 db.porpuse.create({nominationId:2, userId:result.dataValues.id});
