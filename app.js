@@ -3,6 +3,7 @@
 db = require(__dirname + "/models/index");
 var bodyParser = require('body-parser');
 //npm install angular@1.2.32
+var cors = require('cors')
 var path    = require("path");
 var crypto = require("crypto");
 
@@ -13,7 +14,7 @@ let express = require("express");
 let app = express();
 
 app.use(express.static(__dirname + "/views"));
-
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
@@ -28,6 +29,14 @@ app.get('/posts', contr.posts);
 
 //app.get('/main', function(req, res){
     //res.sendFile(path.join(__dirname + "/views/main.html"));
+app.get("/token", function (request, response){
+
+    //response.sendFile(path.join(__dirname + "/views/main.html"));
+
+    response.send({token:"1", Name:"aa"})
+
+});
+
 //});
 app.use("/entry", async function (request, response){
     let sha256 = crypto.createHash("sha256");
@@ -41,29 +50,33 @@ app.use("/entry", async function (request, response){
             firstName:request.body.name,
         }
     });
+
+    //let k = require("crypto").createHash("sha256").update('3333' + 'vyk7f4zwjl82tij63pim6').digest("base64");
+    //k;
+    //let n = sha256.update('3333' + 'vyk7f4zwjl82tij63pim6', "utf-8").digest("base64");
+
+
+
+    console.log(require("crypto").createHash("sha256").update(request.body.password + result[0].dataValues.sault).digest("base64"));
+    //sha256.update(request.body.password + result[0].dataValues.sault, "utf-8");
+    //console.log(sha256.digest("base64"));
+    //console.log(result[0].dataValues.password);
+    //console.log(sha256.digest("base64"));
     if(result.length === 0){
         response.send("error_login");
-    }
-    else if(sha256.update(request.body.password + result[0].sault, "utf-8").digest("base64") !== result[0].password){
+    }//require("crypto").createHash("sha256").update(request.body.password + result[0].dataValues.sault).digest("base64")
+    else if(require("crypto").createHash("sha256").update(request.body.password + result[0].dataValues.sault).digest("base64") !== result[0].dataValues.password){
         response.send("error_password");
     }
     else {
-        contr.Entry(request, response);
+        contr.Entry(request, response, result);
     }
     //console.log(result)
 
 });
 
-app.get("/token", function (request, response){
 
-    //response.sendFile(path.join(__dirname + "/views/main.html"));
-
-    response.send({token:"1", Name:"aa"})
-
-});
-
-
-app.get("/", contr.entryForm);
+//app.get("/", contr.entryForm);
 //app.use("/",function(request, response, next){
     //response.sendFile(path.join(__dirname + "/views/template.html"));
     //next();
@@ -74,6 +87,6 @@ app.get("/entryOrRegistration", function (request, response) {
 
 //app.get("/", contr.entryForm);
 //app.get("/toRegOrEnt", contr.toRegOrEnt);
-app.get("/registration", contr.registration);
+app.post("/registration", contr.registration);
 
-app.listen(2000);
+app.listen(8000);
