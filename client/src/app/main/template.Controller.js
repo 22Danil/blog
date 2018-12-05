@@ -11,7 +11,7 @@ export class MyController {
         $scope.err_pas = "";
 
       this.entry = function () {
-        $http.post('http://localhost:8000/entry', {name: $scope.Name, email: $scope.Email, password: $scope.Password})
+        $http.post('api/entry', {name: $scope.Name, email: $scope.Email, password: $scope.Password})
           .then(function (result) {
             //$scope.books = result.data;
             //console.log(result);
@@ -23,6 +23,13 @@ export class MyController {
             else if (result.data === "error_password") {
                 $scope.err_pas = "Неверный пароль!";
             }
+            else{
+                localStorage.setItem('Token', result.data.token);
+                localStorage.setItem('Name', result.data.name);
+
+                $location.path("/main");
+                //console.log(result.data);
+            }
 
           })
           .catch(function (result) {
@@ -33,15 +40,6 @@ export class MyController {
 
       this.registration = function () {
         $location.path("/registration");
-        /*
-        $http.get('http://localhost:2000/entryOrRegistration')
-          .then(function (result) {
-            $log.log(result.data);
-          })
-          .catch(function (result) {
-            $log.log(result);
-          });
-        */
 
       }
     }

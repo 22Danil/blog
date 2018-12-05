@@ -3,11 +3,12 @@
 import { config } from './index.config';
 import { routerConfig } from './index.route';
 import { runBlock } from './index.run';
-import { MainController } from './main/main.controller';
+
 import { FriendController } from './friend/friends.controller';
 
 import { MyController } from './main/template.Controller';
 import { MyRegistration } from './main/registration.Controller';
+import { MainUserController } from './main/UserMain.controller';
 
 import { GithubContributorService } from '../app/components/githubContributor/githubContributor.service';
 import { WebDevTecService } from '../app/components/webDevTec/webDevTec.service';
@@ -28,11 +29,12 @@ angular.module('yesno', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngM
   .service('webDevTec', WebDevTecService)
   .service('friendsService', FriendsService)
 
-  .controller('MainController', MainController)
+    .controller('MyController', MyController)
   .controller('MyRegistration', MyRegistration)
+    .controller('MainUserController', MainUserController)
 
   .controller('FriendController', FriendController)
-  .controller('MyController', MyController)
+
   .directive('acmeNavbar', NavbarDirective)
   .directive('acmeMalarkey', MalarkeyDirective)
   .directive('post', PostAllDirective);

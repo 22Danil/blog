@@ -2,11 +2,11 @@
             <h1>{{temp.title}}</h1>
             <div>
                 <p>Имя:</p>
-                <input type="text" name="name" ng-model="Name">{{temp.err_log}}
+                <input type="text" name="name" ng-model="Name">{{err_log}}
                 <p>Email:</p>
                 <input type="text" name="email" ng-model="Email">
                 <p>Пароль:</p>
-                <input type="text" name="passsword" ng-model="Password">{{temp.err_pas}}
+                <input type="text" name="passsword" ng-model="Password">{{err_pas}}
                 <p></p>
                 <button type="submit" name="click_button" value="entry" ng-click="temp.entry()"> Вход </button>
                 <button type="submit" name="click_button" value="toRegistration" ng-click="temp.registration()">Регистрация</button>

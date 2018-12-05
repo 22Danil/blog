@@ -10,99 +10,63 @@ var bodyParser = require('body-parser');
 
 
 module.exports = {
-    entryForm: async function(request, response){
-        response.sendFile(path.join(__dirname + "/../views/template.html"));
-    },
     posts: async function(request, response){
-        console.log(request.query.id );
+        //console.log(request.query.id );
         let result = await db.post.findAll({
             where:{
-                firstName:request.query.name
+                firstName:request.body.name
             }
         });
         response.send(result);
     },
-    Entry: async function(request, response, userResult){
-            let role = "";
+    addPost: async function(request, response){
+        console.log("sss");
 
-            await db.porpuse.findAll({
+    },
+    Entry: async function(request, response, userResult){
+
+        await db.porpuse.findAll({
                where:{
-                   userId:userResult.dataValues.id
+                   userId:userResult[0].dataValues.id
                }
             })
                 .then(function (result) {
-                    role = db.role.findAll({
-                        attributes:['nomination'],
+                    db.role.findAll({
                         where:{
-                            id:result.dataValues.nominationId
+                            id:result[0].dataValues.nominationId
                         }
                     })
+                        .then(function (role){
+
+                            const token = jwt.sign({ name: userResult[0].dataValues.firstName, id: userResult[0].dataValues.id}, secret);
+
+
+                            response.json({token:token, name: userResult[0].dataValues.firstName});
+
+                           //console.log(role[0].dataValues.nomination + "111");
+                           //roleUser = role[0].dataValues.nomination;
+                            //o.abs = role[0].dataValues.nomination;
+                            //console.log(o);
+                        })
+                        .catch(function (role) {
+                            console.log(role);
+                        });
 
                 })
                 .catch(function (result){
                     console.log(result);
                 });
 
-            console.log(role);
-            /*
-            let result = await db.role.findAll({
-                attributes:['nomination'],
-                where:{
-                    id:7
-                },
-                include:[{
-                    model:db.porpuse,
-                    where:{
-                        userId:7
-                    }
-                }]
-            });
-            */
-
-
-            //response.sendFile(path.join(__dirname + "/../views/main.html"));
-            /*
-            let result = await db.user.findAll({
-                where:{firstName:request.query.name}
-            });
-            if(result.length === 0){
-                console.log("sdf");
-            }
-            else{
-                response.send(result);
-            }
-            */
-            //console.log(result);
-
-            //console.log(result[0].dataValues.password);
-
-            //let sha256 = crypto.createHash("sha256");
-            //sha256.update(request.query.passsword + result[0].dataValues.sault, "utf-8");
-
-            //console.log(sha256.digest("base64"));
-
-            // шифрование
-            //const token = jwt.sign({ foo: 'bar' }, secret);
-
-            //console.log(token);
-            //response.redirect("/token?tok=" + token + "&name="+request.query.name, 302);
-            //response.send(tok="1", path.join(__dirname + "/../views/main.html"));
-            //response.sendFile(path.join(__dirname + "/../views/main.html"));
-
-
     },
     registration: async function(request, response){
         let sault = Math.random().toString (36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
         //let sha256 = crypto.createHash("sha256");
         //sha256.update(request.query.passsword + sault, "utf-8");
-        console.log(request.body.passsword);
-<<<<<<< HEAD
+        //console.log(request.body.passsword);
+
         //let passwordHash = require("crypto").createHash("sha256").update(request.body.password + sault).digest("base64");
+
         await db.user.create({firstName:request.body.name, email:request.body.email, password:require("crypto").createHash("sha256").update(request.body.password + sault).digest("base64"), sault:sault})
-=======
-        let passwordHash = require("crypto").createHash("sha256").update(request.body.passsword.toString() + sault).digest("base64");
-        await db.user.create({firstName:request.body.name, email:request.body.email, password:require("crypto").createHash("sha256").update(request.body.passsword + sault).digest("base64"), sault:sault})
->>>>>>> master
             .then(function (result) {
                 //console.log(result);
                 db.porpuse.create({nominationId:2, userId:result.dataValues.id});
@@ -111,18 +75,7 @@ module.exports = {
             .catch(function (result) {
                 console.log(result)
             });
-        /*console
-        db.Person.create({firstName:request.query.firstN, lastName: request.query.lastN, number:request.query.Num});
-        response.redirect("/", 302)
 
-        var sha256 = crypto.createHash("sha256");
-        var salt = Math.random().toString (36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-
-        sha256.update("Password" + "sault", "utf-8");
-
-        console.log(sha256.digest("base64"));
-        console.log(salt);
-        */
     },
     book: async function(request, response){
         let result = await db.user.findAll();

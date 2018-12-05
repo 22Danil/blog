@@ -1,0 +1,46 @@
+
+    <style type="text/css">
+        body { margin: 0; }
+        #sidebar, #content { position: absolute; }
+        #sidebar, #content { overflow: auto; padding: 10px; }
+        #header {
+            height: 80px; /* Высота слоя */
+            background: #FEDFC0; border-bottom: 2px solid #7B5427;
+        }
+        #header h1 { padding: 20px; margin: 0; }
+        #sidebar {
+            width: 150px; background: #ECF5E4; border-right: 1px solid #231F20;
+            top: 82px; /* Расстояние от верхнего края */
+            bottom: 0; /* Расстояние снизу  */
+        }
+        #content {
+            top: 82px; /* Расстояние от верхнего края */
+            left: 570px; /* Расстояние от левого края */
+            bottom: 0; right: 0;
+        }
+    </style>
+
+
+    <div>
+        <h1>Добро пожаловать {{nameUser}}</h1>
+        <input type="button" ng-click="addBook()" value="Мои записи">
+        <p></p>
+        <input type="button" ng-click="" value="Все записи">
+        <p></p>
+        <input type="button" ng-click="" value="Поиск">
+        <p></p>
+        <p></p>
+        <p></p>
+        <textarea rows="5" cols="45" name="ADD" ng-disabled="false" class="addPost" ng-model="textForPost">{{textForPost}}</textarea>
+        <p></p>
+        <input type="button" ng-click="newPost()" value="Добавить новую запись">
+    </div>
+
+    <div id="content">
+        <div ng-repeat="book in books">
+            <textarea rows="5" cols="45" name={{book.id}} ng-disabled="true" ng-model="book.postText" class="multi-files">{{book.postText}}</textarea>
+            <input type="button" name={{book.id}} ng-click="edit(book.id)" value="Изменить">
+            <input type="button" ng-click="" value="Сохранить">
+            <input type="button" ng-click="" value="Удалить">
+        </div>
+    </div>

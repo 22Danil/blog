@@ -12,6 +12,12 @@ export function routerConfig ($stateProvider, $urlRouterProvider) {
       templateUrl: 'app/main/registration.html',
       controller:'MyRegistration',
       controllerAs:'regist'
-    });
+    })
+      .state('1',{
+          url:'/main',
+          templateUrl: 'app/main/UserMain.html',
+          controller:'MainUserController',
+          controllerAs:'MeUse'
+      });
   $urlRouterProvider.otherwise('/');
 }

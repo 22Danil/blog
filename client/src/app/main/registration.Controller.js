@@ -17,7 +17,7 @@ export class MyRegistration {
           //console.log(result)
           $log.log(result);
         });
-        //$location.path("/");
+        $location.path("/");
 
     };
 
