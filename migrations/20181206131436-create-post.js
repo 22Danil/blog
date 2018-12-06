@@ -14,6 +14,9 @@ module.exports = {
       postText: {
         type: Sequelize.TEXT
       },
+      titleText: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

@@ -25,7 +25,6 @@ app.use(bodyParser.urlencoded({
 
 
 
-app.post('/api/posts', contr.posts);
 
 /*
 app.use('/addPost', async function (request, response){
@@ -42,30 +41,54 @@ app.use('/addPost', async function (request, response){
 });
 */
 let middleware ={
-    checkToken: async function (request, response, next) {
+    checkToken:function (request, response, next) {
         try {
             const decoded = jwt.verify(request.body.token, secret);
-            let result = await db.user.findAll({
+            let result = db.user.findAll({
                 where:{
                     firstName: decoded.name
                 }
             });
-            if(result.length === 0){
+            if(decoded.role === "Admin"){
+                next();
+            }
+            else if(result.length === 0){
                 console.log("Такого пользователя нет!");
             }
-            console.log(result[0].dataValues);
-
-            console.log(decoded.name);
-            next();
+            else{
+                request.nameUser = decoded.name;
+                next();
+            }
         }
         catch (e) {
             console.log("Токен неверный");
         }
+    },
+    checkRegistration:function(request, response, next){
+        db.user.findAll({
+            where:{
+                firstName:request.body.name
+            }
+        })
+            .then(function (result) {
+                if(result.length !== 0){
+                    response.send("error_login");
+                }
+                else{
+                    next();
+                }
+            })
+            .catch(function (result) {
+               console.log(result);
+            });
+        //console.log(result.length);
+
     }
-
-
 };
 
+app.post('/api/allPost', middleware.checkToken, contr.allPost);
+
+app.post('/api/posts', middleware.checkToken, contr.posts);
 
 app.post('/api/addPost', middleware.checkToken, contr.addPost);
 
@@ -88,6 +111,6 @@ app.use("/api/entry", async function (request, response){
     }
 });
 
-app.post("/api/registration", contr.registration);
+app.post("/api/registration", middleware.checkRegistration, contr.registration);
 
 app.listen(8000);

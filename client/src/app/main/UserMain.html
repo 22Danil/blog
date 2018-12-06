@@ -15,8 +15,8 @@
         }
         #content {
             top: 82px; /* Расстояние от верхнего края */
-            left: 570px; /* Расстояние от левого края */
-            bottom: 0; right: 0;
+            right: 0px; /* Расстояние от правого края */
+            bottom: 0;
         }
     </style>
 
@@ -25,11 +25,13 @@
         <h1>Добро пожаловать {{nameUser}}</h1>
         <input type="button" ng-click="addBook()" value="Мои записи">
         <p></p>
-        <input type="button" ng-click="" value="Все записи">
+        <input type="button" ng-click="AllPost()" value="Все записи">
         <p></p>
         <input type="button" ng-click="" value="Поиск">
         <p></p>
         <p></p>
+        <p></p>
+        <input type="text" ng-model="textForTitle" value={{textForTitle}} class="addPost">
         <p></p>
         <textarea rows="5" cols="45" name="ADD" ng-disabled="false" class="addPost" ng-model="textForPost">{{textForPost}}</textarea>
         <p></p>
@@ -38,9 +40,12 @@
 
     <div id="content">
         <div ng-repeat="book in books">
-            <textarea rows="5" cols="45" name={{book.id}} ng-disabled="true" ng-model="book.postText" class="multi-files">{{book.postText}}</textarea>
+            <h5>Название:{{book.titleText}}  Автор:{{book.firstName}}</h5>
+            <textarea rows="5" cols="45" name={{countId}} ng-disabled="true" ng-model="book.postText" class="multi-files{{book.id}}">{{book.postText}}</textarea>
+            <br>
             <input type="button" name={{book.id}} ng-click="edit(book.id)" value="Изменить">
             <input type="button" ng-click="" value="Сохранить">
             <input type="button" ng-click="" value="Удалить">
+            <p></p>
         </div>
     </div>

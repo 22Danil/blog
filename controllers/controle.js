@@ -7,20 +7,30 @@ var path    = require("path");
 var bodyParser = require('body-parser');
 
 
-
-
 module.exports = {
     posts: async function(request, response){
         //console.log(request.query.id );
         let result = await db.post.findAll({
             where:{
-                firstName:request.body.name
+                firstName:request.nameUser
             }
         });
         response.send(result);
     },
     addPost: async function(request, response){
-        console.log("sss");
+        await db.post.create({firstName: request.nameUser, postText:request.body.textPost, titleText: request.body.textTitle})
+            .then(function (result) {
+                response.json({status:"OK"});
+            })
+            .catch(function (result) {
+               console.log(result);
+            });
+
+
+    },
+    allPost: async function(request, response){
+        let result = await db.post.findAll();
+        response.send(result);
 
     },
     Entry: async function(request, response, userResult){
@@ -38,7 +48,7 @@ module.exports = {
                     })
                         .then(function (role){
 
-                            const token = jwt.sign({ name: userResult[0].dataValues.firstName, id: userResult[0].dataValues.id}, secret);
+                            const token = jwt.sign({ name: userResult[0].dataValues.firstName, id: userResult[0].dataValues.id, role: role[0].dataValues.nomination}, secret);
 
 
                             response.json({token:token, name: userResult[0].dataValues.firstName});
@@ -70,6 +80,7 @@ module.exports = {
             .then(function (result) {
                 //console.log(result);
                 db.porpuse.create({nominationId:2, userId:result.dataValues.id});
+                response.send("OK");
 
             })
             .catch(function (result) {
