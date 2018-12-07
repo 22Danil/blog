@@ -25,13 +25,31 @@ module.exports = {
             .catch(function (result) {
                console.log(result);
             });
-
-
     },
     allPost: async function(request, response){
         let result = await db.post.findAll();
         response.send(result);
 
+    },
+    delPost: async function(request, response){
+        //db.Person.destroy({
+        //             where: {id:request.query.id}
+        //         });
+
+        db.post.destroy({
+            where:{
+                id:request.body.postID
+            }
+        })
+            .then(function (result) {
+                response.json({status: "OK"});
+            })
+            .catch(function (result) {
+                console.log(result);
+            })
+    },
+    editPost: async function(request, response){
+        response.json({status:"OK"});
     },
     Entry: async function(request, response, userResult){
 

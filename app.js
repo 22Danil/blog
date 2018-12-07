@@ -49,19 +49,48 @@ let middleware ={
                     firstName: decoded.name
                 }
             });
-            if(decoded.role === "Admin"){
-                next();
-            }
-            else if(result.length === 0){
+            if(result.length === 0){
                 console.log("Такого пользователя нет!");
             }
+            /*
+            else if(decoded.role === "Admin"){
+                request.nameUser = decoded.name;
+                request.roleUser = decoded.role;
+                next();
+            }
+            */
             else{
                 request.nameUser = decoded.name;
+                request.roleUser = decoded.role;
                 next();
             }
         }
         catch (e) {
             console.log("Токен неверный");
+        }
+    },
+    checkPostUser:function(request, response, next){
+        if(request.roleUser === "Admin"){
+            next();
+        }
+        else{
+            db.post.findAll({
+                where:{
+                    id:request.body.postID
+                }
+            })
+                .then(function (result) {
+                    //console.log(result);
+                    if(result[0].dataValues.firstName === request.nameUser){
+                        next();
+                    }
+                    else{
+                        console.log("Это не ваш пост!");
+                    }
+                })
+                .catch(function (result) {
+                    console.log("1");
+                });
         }
     },
     checkRegistration:function(request, response, next){
@@ -82,9 +111,12 @@ let middleware ={
                console.log(result);
             });
         //console.log(result.length);
-
     }
 };
+
+app.post('/api/editPost', middleware.checkToken, middleware.checkPostUser, contr.editPost);
+
+app.post('/api/delPost', middleware.checkToken, middleware.checkPostUser, contr.delPost);
 
 app.post('/api/allPost', middleware.checkToken, contr.allPost);
 
