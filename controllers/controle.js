@@ -51,6 +51,47 @@ module.exports = {
     editPost: async function(request, response){
         response.json({status:"OK"});
     },
+    searchPost: async function(request, response){
+
+        /*
+        let result = await db.post.findAll({
+            where:{
+                titleText: request.body.textSearch
+            }
+        });
+        response.send(result);
+        */
+        db.post.findAll({
+            where:{
+                titleText: request.body.textSearch
+            }
+        })
+            .then(function (result) {
+                response.send(result);
+
+            })
+            .catch(function (result) {
+                console.log(result);
+            })
+
+
+
+    },
+    savePost: async function(request, response) {
+        db.post.update({postText: request.body.newText},{
+            where:{
+                id: request.body.postID
+            }
+        })
+            .then(function (result) {
+                response.json({status: "OK"});
+            })
+            .catch(function (result) {
+                console.log(result);
+            })
+
+
+    },
     Entry: async function(request, response, userResult){
 
         await db.porpuse.findAll({

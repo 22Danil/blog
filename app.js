@@ -23,9 +23,6 @@ app.use(bodyParser.urlencoded({
 
 //app.use("/token", express.static(__dirname + "/views"));
 
-
-
-
 /*
 app.use('/addPost', async function (request, response){
     try {
@@ -113,6 +110,10 @@ let middleware ={
         //console.log(result.length);
     }
 };
+
+app.post('/api/searchPost', middleware.checkToken, contr.searchPost);
+
+app.post('/api/savePost', middleware.checkToken, contr.savePost);
 
 app.post('/api/editPost', middleware.checkToken, middleware.checkPostUser, contr.editPost);
 

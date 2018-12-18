@@ -27,7 +27,8 @@
         <p></p>
         <input type="button" ng-click="AllPost()" value="Все записи">
         <p></p>
-        <input type="button" ng-click="" value="Поиск">
+        <input type="button" ng-click="Search()" value="Поиск">
+        <input type="text" ng-model="textForSearch" value={{textForSearch}} class="SearchPost">
         <p></p>
         <p></p>
         <p></p>
@@ -41,10 +42,10 @@
     <div id="content">
         <div ng-repeat="book in books">
             <h5>Название:{{book.titleText}}  Автор:{{book.firstName}}</h5>
-            <textarea rows="5" cols="45" name={{countId}} ng-disabled="{{test}}" ng-model="book.postText" class="multi-files{{book.id}}">{{book.postText}}</textarea>
+            <textarea rows="5" cols="45" name={{countId}} disabled="true" ng-model="book.postText" class="multi-files{{book.id}}">{{book.postText}}</textarea>
             <br>
             <input type="button" name={{book.id}} ng-click="editPost(book.id)" value="Изменить">
-            <input type="button" ng-click="" value="Сохранить">
+            <input type="button" ng-click="savePost(book.id)" value="Сохранить">
             <input type="button" ng-click="delPost(book.id)" value="Удалить">
             <p></p>
         </div>

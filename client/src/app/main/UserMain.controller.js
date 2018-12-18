@@ -11,8 +11,11 @@ export class MainUserController {
 
         $scope.textForPost = "";
         $scope.textForTitle = "";
+        $scope.textForSearch = "";
         $scope.countId = 0;
         $scope.test = "true";
+        let postEditId;
+        let postEditText;
 
         //$scope.user_name = $location.search().name;
         $scope.addBook = function () {
@@ -27,34 +30,47 @@ export class MainUserController {
                 });
         };
         $scope.editPost = function (id) {
-            var editPost = document.getElementsByClassName("multi-files"+id);
-            //console.log(id);
-            //console.log(tee[0].textContent);
+            let editPost = document.getElementsByClassName("multi-files"+id);
+            postEditId = id;
+            postEditText = editPost[0].textContent;
+
             $http.post('/api/editPost', {token: localStorage.getItem("Token"), postID: id})
                 .then(function (result) {
                     if(result.data.status === "OK"){
-                        console.log(editPost[0].attributes);
-                        /*
-                        let test = () => {
-                            editPost[0].disabled = "false";
-                            $scope.test = "false";
-                        }
-                        */
-                        //$scope.$apply(test());
-                        $scope.test = "false";
+                        console.log(editPost[0].disabled);//[0].attributes
+                        //$scope.test = "false";//ng-disabled="{{test}}"
                         editPost[0].attributes.removeNamedItem("disabled");
-                        //editPost[0].disabled.remove();
-                        console.log("asddfsfgd");
-                        //console.log(editPost[0].querySelector(""));
-                        //console.log(editPost[0].getAttribute('disabled'));
-                        //console.log(editPost[0].);
                     }
                 })
                 .catch(function (result) {
                     console.log(result);
                 });
         };
-
+        $scope.savePost = function(id){
+            let savePost = document.getElementsByClassName("multi-files"+id);
+            if(id !== postEditId){
+                console.log("id несовпали!")
+            }
+            else if(savePost[0].textContent === postEditText){
+                console.log("Вы ничего не изменили!")
+            }
+            else{
+                $http.post('/api/savePost',{token: localStorage.getItem("Token"), newText: savePost[0].textContent, postID: id})
+                    .then(function (result) {
+                        if(result.data.status === "OK"){
+                            //$scope.addBook();
+                            savePost[0].disabled = true;
+                        }
+                        else{
+                            console.log("Ошибка добавления!");
+                        }
+                    })
+                    .catch(function (result) {
+                        console.log(result);
+                    })
+            }
+            //console.log(savePost[0].textContent);
+        };
         $scope.newPost = function () {
             let text = document.getElementsByClassName("addPost");
             if(text[1].textContent !== ""){
@@ -69,19 +85,39 @@ export class MainUserController {
                     });
             }
 
-            //console.log(tee[0].textContent);
         };
         $scope.AllPost = function () {
             $http.post('/api/allPost', {token: localStorage.getItem("Token")})
                 .then(function (result) {
+                    console.log(result.data);
                     $scope.books = result.data;
+
                 })
                 .catch(function (result) {
                    console.log(result);
                 });
         };
+        $scope.Search = function(){
+            if($scope.textForSearch !== ""){
+                $http.post('/api/searchPost', {token: localStorage.getItem("Token"), textSearch: $scope.textForSearch})
+                    .then(function (result) {
+                        console.log(result.data);
+                        $scope.books = result.data;
+                    })
+                    .catch(function (result) {
+                        console.log(result);
+                    })
+
+
+
+
+            }
+
+
+
+        };
         $scope.delPost = function (id) {
-            let DelPost = document.getElementsByClassName("multi-files"+id);
+            //let DelPost = document.getElementsByClassName("multi-files"+id);
 
             $http.post('/api/delPost', {token: localStorage.getItem("Token"), postID: id})
                 .then(function (result) {
