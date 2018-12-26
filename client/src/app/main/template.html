@@ -1,6 +1,10 @@
 
+<link href="../styles/template.css" rel="stylesheet">
+<div id="fon">
+
+<div id="entryDiv">
             <h1>{{temp.title}}</h1>
-            <div>
+
                 <p>Имя:</p>
                 <input type="text" name="name" ng-model="Name">{{err_log}}
                 <p>Email:</p>
@@ -11,3 +15,4 @@
                 <button type="submit" name="click_button" value="entry" ng-click="temp.entry()"> Вход </button>
                 <button type="submit" name="click_button" value="toRegistration" ng-click="temp.registration()">Регистрация</button>
             </div>
+</div>

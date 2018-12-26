@@ -52,15 +52,6 @@ module.exports = {
         response.json({status:"OK"});
     },
     searchPost: async function(request, response){
-
-        /*
-        let result = await db.post.findAll({
-            where:{
-                titleText: request.body.textSearch
-            }
-        });
-        response.send(result);
-        */
         db.post.findAll({
             where:{
                 titleText: request.body.textSearch
@@ -73,9 +64,6 @@ module.exports = {
             .catch(function (result) {
                 console.log(result);
             })
-
-
-
     },
     savePost: async function(request, response) {
         db.post.update({postText: request.body.newText},{
@@ -89,8 +77,6 @@ module.exports = {
             .catch(function (result) {
                 console.log(result);
             })
-
-
     },
     Entry: async function(request, response, userResult){
 
