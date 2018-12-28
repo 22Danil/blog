@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     titleText: DataTypes.STRING
   }, {});
   post.associate = function(models) {
+      // TODO внешний ключ на имя пользователя это не правильно сделай его на id пользователя
       post.belongsTo(models.user, {foreignKey: 'firstName', targetKey: 'id'});
   };
   return post;

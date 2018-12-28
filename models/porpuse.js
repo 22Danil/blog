@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     userId: DataTypes.INTEGER
   }, {});
   porpuse.associate = function(models) {
+    // TODO выпилить коментраии с кода
     // associations can be defined here
   };
   return porpuse;
