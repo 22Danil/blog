@@ -3,12 +3,9 @@ db = require(__dirname + "//..//models//index");
 const jwt = require('jsonwebtoken');
 // TODO такие переменные выноси в конфиг файл которые должни изменяться перед деплоем на сервер
 const secret = 'shhhhh';
-// TODO выпилить коментраии с кода
-//test = require(__dirname + "/../views");
-// TODO Убери неиспользуемые модули
-var crypto = require("crypto");
-var path    = require("path");
-var bodyParser = require('body-parser');
+// TODO выпилить коментраии с кода // Done
+
+// TODO Убери неиспользуемые модули // Done
 
 
 module.exports = {
@@ -40,10 +37,8 @@ module.exports = {
         response.send(result);
     },
     delPost: async function(request, response){
-        // TODO выпилить коментраии с кода
-        //db.Person.destroy({
-        //             where: {id:request.query.id}
-        //         });
+        // TODO выпилить коментраии с кода // Done
+
         // TODO сделай как на 89-110 строке
         db.post.destroy({
             where:{
@@ -151,12 +146,8 @@ module.exports = {
     },
     registration: async function(request, response){
         let sault = Math.random().toString (36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-        // TODO выпилить коментраии с кода
-        //let sha256 = crypto.createHash("sha256");
-        //sha256.update(request.query.passsword + sault, "utf-8");
-        //console.log(request.body.passsword);
+        // TODO выпилить коментраии с кода  // Done
 
-        //let passwordHash = require("crypto").createHash("sha256").update(request.body.password + sault).digest("base64");
 
         await db.user.create({firstName:request.body.name, email:request.body.email, password:require("crypto").createHash("sha256").update(request.body.password + sault).digest("base64"), sault:sault})
             .then(function (result) {
@@ -172,20 +163,5 @@ module.exports = {
             .catch(function (result) {
                 console.log(result)
             });
-
-    },
-    // TODO если эта функция не используется то удали ее
-    book: async function(request, response){
-        let result = await db.user.findAll();
-        // TODO используй response.json(), фронт всегда будет ожидать json
-        response.send(result);
-
-    },
-    // TODO если эта функция не используется то удали ее
-    test: async function(request, response){
-        console.log("Middleware 1");
-        console.log(request);
     }
-
-
 };

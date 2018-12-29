@@ -7,9 +7,8 @@ const secret = 'shhhhh';
 // TODO импорт удобней использовать относительный
 db = require(__dirname + "/models/index");
 var bodyParser = require('body-parser');
-// TODO выпилить коментраии с кода
-//npm install angular@1.2.32
-//var cors = require('cors')
+// TODO выпилить коментраии с кода // Done
+
 var path    = require("path");
 var crypto = require("crypto");
 // TODO импорт удобней использовать относительный вот так
@@ -22,28 +21,15 @@ let express = require("express");
 let app = express();
 
 app.use(express.static(__dirname + "/views"));
-// TODO выпилить коментраии с кода
-//app.use(cors());
+// TODO выпилить коментраии с кода // Done
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
 // TODO выпилить коментраии с кода // Done
 // TODO выпилить коментраии с кода // Done
-/*
-app.use('/addPost', async function (request, response){
-    try {
-        const decoded = jwt.verify(request.body.token, secret);
-        console.log(decoded.name);
-    }
-    catch (e) {
-        console.log("Токен неверный");
-    }
 
-    //console.log(request.body.token);
-
-});
-*/
 
 // TODO убедись правильно ли ты используешь https://expressjs.com/ru/guide/using-middleware.html ?
 let middleware ={
@@ -60,14 +46,7 @@ let middleware ={
                 // TODO эту ошибку должен увидеть пользователь, отправь ее на фронт
                 console.log("Такого пользователя нет!");
             }
-            // TODO выпилить коментраии с кода
-            /*
-            else if(decoded.role === "Admin"){
-                request.nameUser = decoded.name;
-                request.roleUser = decoded.role;
-                next();
-            }
-            */
+            // TODO выпилить коментраии с кода // Done
             else{
                 request.nameUser = decoded.name;
                 request.roleUser = decoded.role;
@@ -123,8 +102,7 @@ let middleware ={
             .catch(function (result) {
                console.log(result);
             });
-        // TODO выпилить коментраии с кода
-        //console.log(result.length);
+        // TODO выпилить коментраии с кода // Done
     }
 };
 /**
@@ -147,8 +125,8 @@ app.post('/api/posts', middleware.checkToken, contr.posts);
 app.post('/api/addPost', middleware.checkToken, contr.addPost);
 // TODO здесь используеться мидлвар только для одной апишки,
 app.use("/api/entry", async function (request, response){
-    // TODO убрать неиспользуемую переменную
-    let sha256 = crypto.createHash("sha256");
+    // TODO убрать неиспользуемую переменную // Done
+
     let result = await db.user.findAll({
         where:{
             firstName:request.body.name,
@@ -158,8 +136,8 @@ app.use("/api/entry", async function (request, response){
     if(result.length === 0){
         response.send("error_login");
     }
-    // TODO выпилить коментраии с кода
-    //require("crypto").createHash("sha256").update(request.body.password + result[0].dataValues.sault).digest("base64")
+    // TODO выпилить коментраии с кода // Done
+
     else if(require("crypto").createHash("sha256").update(request.body.password + result[0].dataValues.sault).digest("base64") !== result[0].dataValues.password){
         response.send("error_password");
     }
