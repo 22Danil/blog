@@ -28,9 +28,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
-// TODO выпилить коментраии с кода
-//app.use("/token", express.static(__dirname + "/views"));
-// TODO выпилить коментраии с кода
+// TODO выпилить коментраии с кода // Done
+// TODO выпилить коментраии с кода // Done
 /*
 app.use('/addPost', async function (request, response){
     try {
