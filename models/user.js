@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     sault: DataTypes.STRING
   }, {});
   user.associate = function(models) {
+    // TODO выпилить коментраии с кода
     // associations can be defined here
       //user.hasMany(models.post);
       //user.hasMany(models.post, {foreignKey: 'id', sourceKey: 'firstName'});
