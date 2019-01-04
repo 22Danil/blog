@@ -18,17 +18,6 @@ export class MainUserController {
         let postEditText;
 
         //$scope.user_name = $location.search().name;
-        $scope.addBook = function () {
-            //console.log(localStorage.getItem("Token"));
-            $http.post('/api/posts', {token: localStorage.getItem("Token")})
-                .then(function (result) {
-                    $scope.books = result.data;
-                    console.log(result)
-                })
-                .catch(function (result) {
-                    console.log(result)
-                });
-        };
         $scope.editPost = function (id) {
             let editPost = document.getElementsByClassName("multi-files"+id);
             postEditId = id;
@@ -69,15 +58,14 @@ export class MainUserController {
                         console.log(result);
                     })
             }
-            //console.log(savePost[0].textContent);
         };
         $scope.newPost = function () {
             let text = document.getElementsByClassName("addPost");
             if(text[1].textContent !== ""){
-                $http.post('/api/addPost', {token: localStorage.getItem("Token"), textPost: text[1].textContent, textTitle: $scope.textForTitle})
+                $http.post('/api/posts', {token: localStorage.getItem("Token"), textPost: text[1].textContent, textTitle: $scope.textForTitle})
                     .then(function (result) {
                         if(result.data.status === "OK"){
-                            $scope.addBook();
+                            $scope.Posts();
                         }
                     })
                     .catch(function (result) {
@@ -86,8 +74,19 @@ export class MainUserController {
             }
 
         };
-        $scope.AllPost = function () {
-            $http.post('/api/allPost', {token: localStorage.getItem("Token")})
+        $scope.Posts = function () {
+            //console.log(localStorage.getItem("Token"));
+            $http.get('/api/user/'+ localStorage.getItem("Id") + '/posts', {params: {token: localStorage.getItem("Token")}})
+                .then(function (result) {
+                    $scope.books = result.data;
+                    console.log(result)
+                })
+                .catch(function (result) {
+                    console.log(result)
+                });
+        };
+        $scope.AllPosts = function () {
+            $http.get('/api/posts', {params: {token: localStorage.getItem("Token")}})
                 .then(function (result) {
                     console.log(result.data);
                     $scope.books = result.data;
@@ -107,29 +106,18 @@ export class MainUserController {
                     .catch(function (result) {
                         console.log(result);
                     })
-
-
-
-
             }
-
-
-
         };
         $scope.delPost = function (id) {
-            //let DelPost = document.getElementsByClassName("multi-files"+id);
-
-            $http.post('/api/delPost', {token: localStorage.getItem("Token"), postID: id})
+            $http.delete('/api/delPost', {token: localStorage.getItem("Token"), postID: id})
                 .then(function (result) {
                     if(result.data.status === "OK"){
-                        $scope.addBook();
+                        $scope.Posts();
                     }
                 })
                 .catch(function (result) {
                     console.log(result);
                 });
         };
-
-
     }
 }

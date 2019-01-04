@@ -1,17 +1,13 @@
 // добавь const для строки ниже
-db = require(__dirname + "//..//models//index");
+db = require(__dirname + "/../models/index");
 const jwt = require('jsonwebtoken');
-// TODO такие переменные выноси в конфиг файл которые должни изменяться перед деплоем на сервер
-const secret = 'shhhhh';
-// TODO выпилить коментраии с кода // Done
-
-// TODO Убери неиспользуемые модули // Done
+// TODO такие переменные выноси в конфиг файл которые должни изменяться перед деплоем на сервер // Done
+//const secret = 'shhhhh';
+const config = require('./../config/config');
 
 
 module.exports = {
     posts: async function(request, response){
-        // TODO выпилить коментраии с кода
-        //console.log(request.query.id );
         let result = await db.post.findAll({
             where:{
                 firstName:request.nameUser
@@ -37,7 +33,6 @@ module.exports = {
         response.send(result);
     },
     delPost: async function(request, response){
-        // TODO выпилить коментраии с кода // Done
 
         // TODO сделай как на 89-110 строке
         db.post.destroy({
@@ -104,8 +99,8 @@ module.exports = {
                 name: userResult[0].dataValues.firstName,
                 id: userResult[0].dataValues.id,
                 role: role[0].dataValues.nomination
-            }, secret);
-            return response.json({token: token, name: userResult[0].dataValues.firstName});
+            }, config.secret);
+            return response.json({token: token, name: userResult[0].dataValues.firstName, id: userResult[0].dataValues.id});
         } catch (e) {
             // TODO обработчик ошибок стоит делать один на весь контролер, а лучше вынести его в миделвар
             console.log(e);
@@ -146,19 +141,15 @@ module.exports = {
     },
     registration: async function(request, response){
         let sault = Math.random().toString (36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-        // TODO выпилить коментраии с кода  // Done
 
 
         await db.user.create({firstName:request.body.name, email:request.body.email, password:require("crypto").createHash("sha256").update(request.body.password + sault).digest("base64"), sault:sault})
             .then(function (result) {
-                // TODO выпилить коментраии с кода
-                //console.log(result);
                 // TODO в двух строках ниже есть проблема, здесь дело случая какая выполниться раньше
                 // TODO используй async / await
                 db.porpuse.create({nominationId:2, userId:result.dataValues.id});
                 // TODO используй response.json(), фронт всегда будет ожидать json
                 response.send("OK");
-
             })
             .catch(function (result) {
                 console.log(result)

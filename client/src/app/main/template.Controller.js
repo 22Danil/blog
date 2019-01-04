@@ -26,6 +26,7 @@ export class MyController {
             else{
                 localStorage.setItem('Token', result.data.token);
                 localStorage.setItem('Name', result.data.name);
+                localStorage.setItem('Id', result.data.id);
 
                 $location.path("/main");
                 //console.log(result.data);

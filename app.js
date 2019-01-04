@@ -1,52 +1,65 @@
 // TODO выпилить коментраии с кода
 //bower install angular#1.2.32
-const jwt = require('jsonwebtoken');
-// TODO такие переменные выноси в конфиг файл которые должни изменяться перед деплоем на сервер
-// TODO переменная дублируеться в 2 местах
-const secret = 'shhhhh';
-// TODO импорт удобней использовать относительный
-db = require(__dirname + "/models/index");
-var bodyParser = require('body-parser');
-// TODO выпилить коментраии с кода // Done
 
-var path    = require("path");
-var crypto = require("crypto");
-// TODO импорт удобней использовать относительный вот так
+
+const jwt = require('jsonwebtoken');
+// TODO такие переменные выноси в конфиг файл которые должни изменяться перед деплоем на сервер //Done
+// TODO переменная дублируеться в 2 местах //Done
+const config = require('./config/config');
+//const secret = 'shhhhh';
+// TODO импорт удобней использовать относительный //Done
+const db = require('./models/index');
+const Op = db.Sequelize.Op;
+let bodyParser = require('body-parser');
+
+// TODO импорт удобней использовать относительный вот так //Done // В чем разница??
 // const contr = require('./controllers/controle'); так
 // const contr = require('controllers/controle'); или так
-const contr = require(__dirname + '/controllers/controle');
+const contr = require('./controllers/controle');
 
 let express = require("express");
 
 let app = express();
 
 app.use(express.static(__dirname + "/views"));
-// TODO выпилить коментраии с кода // Done
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
-// TODO выпилить коментраии с кода // Done
-// TODO выпилить коментраии с кода // Done
-
 
 // TODO убедись правильно ли ты используешь https://expressjs.com/ru/guide/using-middleware.html ?
 let middleware ={
-    checkToken:function (request, response, next) {
+    checkToken:async function(request, response, next) {
         try {
-            const decoded = jwt.verify(request.body.token, secret);
-            // TODO здесь будут проблемы из за асинхроности, нужно добавить async / await
-            let result = db.user.findAll({
-                where:{
-                    firstName: decoded.name
-                }
-            });
+            let decoded;
+            if(request.body.token){
+                decoded = jwt.verify(request.body.token, config.secret);
+            }
+            else {
+                decoded = jwt.verify(request.query.token, config.secret);
+            }
+
+            let result;
+            if(request.params.id){
+                result = await db.user.findAll({
+                    where:{
+                        firstName: decoded.name,
+                        [Op.and]: {id: request.params.id}
+                    }
+                });
+            }
+            else {
+                result = await db.user.findAll({
+                    where:{
+                        firstName: decoded.name,
+                    }
+                });
+            }
             if(result.length === 0){
                 // TODO эту ошибку должен увидеть пользователь, отправь ее на фронт
                 console.log("Такого пользователя нет!");
             }
-            // TODO выпилить коментраии с кода // Done
             else{
                 request.nameUser = decoded.name;
                 request.roleUser = decoded.role;
@@ -102,7 +115,6 @@ let middleware ={
             .catch(function (result) {
                console.log(result);
             });
-        // TODO выпилить коментраии с кода // Done
     }
 };
 /**
@@ -110,19 +122,25 @@ let middleware ={
  * https://jazzteam.org/ru/technical-articles/restful-services-manual/
  * у тебя все апи принимает POST запрос, сверься с гайдом правильно ли это?
  */
-app.post('/api/searchPost', middleware.checkToken, contr.searchPost);
+app.post('/api/searchPost', middleware.checkToken, contr.searchPost);//Поменять
 
-app.post('/api/savePost', middleware.checkToken, contr.savePost);
+app.post('/api/savePost', middleware.checkToken, contr.savePost);//Поменять
 
-app.post('/api/editPost', middleware.checkToken, middleware.checkPostUser, contr.editPost);
+app.post('/api/editPost', middleware.checkToken, middleware.checkPostUser, contr.editPost);//Поменять
 
-app.post('/api/delPost', middleware.checkToken, middleware.checkPostUser, contr.delPost);
+app.delete('/api/posts', middleware.checkToken, middleware.checkPostUser, contr.delPost);//
 
-app.post('/api/allPost', middleware.checkToken, contr.allPost);
+app.get('/api/posts', middleware.checkToken, contr.allPost);//Done
 
-app.post('/api/posts', middleware.checkToken, contr.posts);
+app.get('/api/user/:id/posts', middleware.checkToken, contr.posts);//Done
+///app.get('/api/posts', middleware.checkToken, contr.posts);
 
-app.post('/api/addPost', middleware.checkToken, contr.addPost);
+app.post('/api/posts', middleware.checkToken, contr.addPost);//Done
+
+
+
+//вход и регистрацию поменять/уточнить
+
 // TODO здесь используеться мидлвар только для одной апишки,
 app.use("/api/entry", async function (request, response){
     // TODO убрать неиспользуемую переменную // Done
@@ -136,7 +154,6 @@ app.use("/api/entry", async function (request, response){
     if(result.length === 0){
         response.send("error_login");
     }
-    // TODO выпилить коментраии с кода // Done
 
     else if(require("crypto").createHash("sha256").update(request.body.password + result[0].dataValues.sault).digest("base64") !== result[0].dataValues.password){
         response.send("error_password");
@@ -146,6 +163,6 @@ app.use("/api/entry", async function (request, response){
     }
 });
 
-app.post("/api/registration", middleware.checkRegistration, contr.registration);
+app.post("/api/registration", middleware.checkRegistration, contr.registration);//Поменять
 
 app.listen(8000);
