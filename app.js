@@ -27,7 +27,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
-
+// TODO убрать "роль" из токена
 // TODO убедись правильно ли ты используешь https://expressjs.com/ru/guide/using-middleware.html ?
 let middleware ={
     checkToken:async function(request, response, next) {
@@ -45,7 +45,7 @@ let middleware ={
                 result = await db.user.findAll({
                     where:{
                         firstName: decoded.name,
-                        [Op.and]: {id: request.params.id}
+                        [Op.and]: {id: decoded.id}
                     }
                 });
             }
@@ -61,6 +61,7 @@ let middleware ={
                 console.log("Такого пользователя нет!");
             }
             else{
+                request.user = result[0].dataValues;// TODO переделдать
                 request.nameUser = decoded.name;
                 request.roleUser = decoded.role;
                 next();
@@ -79,7 +80,7 @@ let middleware ={
             // TODO используй async / await
             db.post.findAll({
                 where:{
-                    id:request.body.postID
+                    id:request.params.id
                 }
             })
                 .then(function (result) {
@@ -122,18 +123,15 @@ let middleware ={
  * https://jazzteam.org/ru/technical-articles/restful-services-manual/
  * у тебя все апи принимает POST запрос, сверься с гайдом правильно ли это?
  */
-app.post('/api/searchPost', middleware.checkToken, contr.searchPost);//Поменять
+app.get('/api/search/:title/posts', middleware.checkToken, contr.searchPost);// TODO спросить правильно ли? Как правильно сделать api для входа и регситрации?
 
-app.post('/api/savePost', middleware.checkToken, contr.savePost);//Поменять
+app.put('/api/posts/:id', middleware.checkToken, middleware.checkPostUser, contr.savePost);//Done
 
-app.post('/api/editPost', middleware.checkToken, middleware.checkPostUser, contr.editPost);//Поменять
-
-app.delete('/api/posts', middleware.checkToken, middleware.checkPostUser, contr.delPost);//
+app.delete('/api/posts/:id', middleware.checkToken, middleware.checkPostUser, contr.delPost);//Done
 
 app.get('/api/posts', middleware.checkToken, contr.allPost);//Done
 
 app.get('/api/user/:id/posts', middleware.checkToken, contr.posts);//Done
-///app.get('/api/posts', middleware.checkToken, contr.posts);
 
 app.post('/api/posts', middleware.checkToken, contr.addPost);//Done
 

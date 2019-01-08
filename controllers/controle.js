@@ -37,7 +37,7 @@ module.exports = {
         // TODO сделай как на 89-110 строке
         db.post.destroy({
             where:{
-                id:request.body.postID
+                id:request.params.id
             }
         })
             .then(function (result) {
@@ -71,7 +71,7 @@ module.exports = {
         // TODO используй async / await сделай как на 89-110 строкеt
         db.post.update({postText: request.body.newText},{
             where:{
-                id: request.body.postID
+                id: request.params.id
             }
         })
             .then(function (result) {

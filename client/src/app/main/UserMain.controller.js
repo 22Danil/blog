@@ -1,3 +1,5 @@
+import {toString} from "../../../bower_components/moment/src/lib/moment/format";
+
 export class MainUserController {
     constructor ($timeout, friendsService, webDevTec, $http, $log, $location, $scope) {
         'ngInject'
@@ -23,6 +25,9 @@ export class MainUserController {
             postEditId = id;
             postEditText = editPost[0].textContent;
 
+            editPost[0].attributes.removeNamedItem("disabled");
+
+            /*
             $http.post('/api/editPost', {token: localStorage.getItem("Token"), postID: id})
                 .then(function (result) {
                     if(result.data.status === "OK"){
@@ -34,6 +39,7 @@ export class MainUserController {
                 .catch(function (result) {
                     console.log(result);
                 });
+             */
         };
         $scope.savePost = function(id){
             let savePost = document.getElementsByClassName("multi-files"+id);
@@ -44,7 +50,7 @@ export class MainUserController {
                 console.log("Вы ничего не изменили!")
             }
             else{
-                $http.post('/api/savePost',{token: localStorage.getItem("Token"), newText: savePost[0].textContent, postID: id})
+                $http.put('/api/posts/' + id, {token: localStorage.getItem("Token"), newText: savePost[0].textContent, postID: id})
                     .then(function (result) {
                         if(result.data.status === "OK"){
                             //$scope.addBook();
@@ -97,8 +103,12 @@ export class MainUserController {
                 });
         };
         $scope.Search = function(){
+            let idPost = document.getElementsByClassName("addPost");
+            console.log($scope.books);
+
+            /*
             if($scope.textForSearch !== ""){
-                $http.post('/api/searchPost', {token: localStorage.getItem("Token"), textSearch: $scope.textForSearch})
+                $http.get('/api/searchPost', {token: localStorage.getItem("Token"), textSearch: $scope.textForSearch})
                     .then(function (result) {
                         console.log(result.data);
                         $scope.books = result.data;
@@ -107,9 +117,10 @@ export class MainUserController {
                         console.log(result);
                     })
             }
+            */
         };
         $scope.delPost = function (id) {
-            $http.delete('/api/delPost', {token: localStorage.getItem("Token"), postID: id})
+            $http.delete('/api/posts/'+ id, {params: {token: localStorage.getItem("Token")}})
                 .then(function (result) {
                     if(result.data.status === "OK"){
                         $scope.Posts();
