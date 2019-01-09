@@ -11,7 +11,7 @@ export class MyController {
         $scope.err_pas = "";
 
       this.entry = function () {
-        $http.post('api/entry', {name: $scope.Name, email: $scope.Email, password: $scope.Password})
+        $http.post('/entry', {name: $scope.Name, email: $scope.Email, password: $scope.Password})
           .then(function (result) {
             //$scope.books = result.data;
             //console.log(result);

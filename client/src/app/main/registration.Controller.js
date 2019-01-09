@@ -9,7 +9,7 @@ export class MyRegistration {
 
 
     this.registration = function () {
-      $http.post('/api/registration', {name: $scope.Name, email: $scope.Email, password: $scope.Password})
+      $http.post('/registration', {name: $scope.Name, email: $scope.Email, password: $scope.Password})
         .then(function (result) {
             if (result.data === "error_login") {
                 $scope.err_log = "Такой логин уже занят!";

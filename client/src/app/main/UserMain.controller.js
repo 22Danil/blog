@@ -4,13 +4,7 @@ export class MainUserController {
     constructor ($timeout, friendsService, webDevTec, $http, $log, $location, $scope) {
         'ngInject'
 
-        //console.log(test);
-        //localStorage.setItem('myKey', 'Value');
-        //1console.log($location.search().name);
-        //$scope.sample1=function(){
-
         $scope.nameUser = localStorage.getItem("Name");
-
         $scope.textForPost = "";
         $scope.textForTitle = "";
         $scope.textForSearch = "";
@@ -19,27 +13,12 @@ export class MainUserController {
         let postEditId;
         let postEditText;
 
-        //$scope.user_name = $location.search().name;
         $scope.editPost = function (id) {
             let editPost = document.getElementsByClassName("multi-files"+id);
             postEditId = id;
             postEditText = editPost[0].textContent;
-
             editPost[0].attributes.removeNamedItem("disabled");
 
-            /*
-            $http.post('/api/editPost', {token: localStorage.getItem("Token"), postID: id})
-                .then(function (result) {
-                    if(result.data.status === "OK"){
-                        console.log(editPost[0].disabled);//[0].attributes
-                        //$scope.test = "false";//ng-disabled="{{test}}"
-                        editPost[0].attributes.removeNamedItem("disabled");
-                    }
-                })
-                .catch(function (result) {
-                    console.log(result);
-                });
-             */
         };
         $scope.savePost = function(id){
             let savePost = document.getElementsByClassName("multi-files"+id);
@@ -103,12 +82,8 @@ export class MainUserController {
                 });
         };
         $scope.Search = function(){
-            let idPost = document.getElementsByClassName("addPost");
-            console.log($scope.books);
-
-            /*
             if($scope.textForSearch !== ""){
-                $http.get('/api/searchPost', {token: localStorage.getItem("Token"), textSearch: $scope.textForSearch})
+                $http.get('/api/search/' + $scope.textForSearch, {params: {token: localStorage.getItem("Token")}})
                     .then(function (result) {
                         console.log(result.data);
                         $scope.books = result.data;
@@ -117,7 +92,7 @@ export class MainUserController {
                         console.log(result);
                     })
             }
-            */
+
         };
         $scope.delPost = function (id) {
             $http.delete('/api/posts/'+ id, {params: {token: localStorage.getItem("Token")}})

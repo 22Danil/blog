@@ -55,7 +55,7 @@ module.exports = {
 
         db.post.findAll({
             where:{
-                titleText: request.body.textSearch
+                titleText: request.params.title
             }
         })
             .then(function (result) {
@@ -81,9 +81,17 @@ module.exports = {
                 console.log(result);
             })
     },
-    Entry: async function(request, response, userResult){
+    Entry: async function(request, response){
         // TODO получилась дикая вложеность, ниже перепишу посмотри как лучше делать
         try {
+            //
+            let userResult = await db.user.findAll({
+                where:{
+                    firstName:request.body.name,
+                }
+            });
+            //
+
             // TODO если тебе нужно найти только 1 значение то стоит использовать findOne вместо findAll
             const result = await db.porpuse.findAll({
                 where: {
@@ -139,6 +147,26 @@ module.exports = {
                 });*/
 
     },
+    checkEntry: async function(request, response, next){
+        // TODO убрать неиспользуемую переменную // Done
+
+        let result = await db.user.findAll({
+            where:{
+                firstName:request.body.name,
+            }
+        });
+
+        if(result.length === 0){
+            response.send("error_login");
+        }
+
+        else if(require("crypto").createHash("sha256").update(request.body.password + result[0].dataValues.sault).digest("base64") !== result[0].dataValues.password){
+            response.send("error_password");
+        }
+        else {
+            next();
+        }
+    },
     registration: async function(request, response){
         let sault = Math.random().toString (36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
@@ -153,6 +181,25 @@ module.exports = {
             })
             .catch(function (result) {
                 console.log(result)
+            });
+    },
+    checkRegistration:async function(request, response, next){
+        // TODO используй async / await
+        db.user.findAll({
+            where:{
+                firstName:request.body.name
+            }
+        })
+            .then(function (result) {
+                if(result.length !== 0){
+                    response.send("error_login");
+                }
+                else{
+                    next();
+                }
+            })
+            .catch(function (result) {
+                console.log(result);
             });
     }
 };
