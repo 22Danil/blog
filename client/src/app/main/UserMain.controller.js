@@ -4,6 +4,7 @@ export class MainUserController {
     constructor ($timeout, friendsService, webDevTec, $http, $log, $location, $scope) {
         'ngInject'
 
+
         $scope.nameUser = localStorage.getItem("Name");
         $scope.textForPost = "";
         $scope.textForTitle = "";
@@ -102,7 +103,9 @@ export class MainUserController {
                     }
                 })
                 .catch(function (result) {
+                    alert("dfssdf");
                     console.log(result);
+                    console.log(result.status);
                 });
         };
     }

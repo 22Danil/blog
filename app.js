@@ -30,6 +30,7 @@ app.use(bodyParser.urlencoded({
 
 
 // TODO убрать "роль" из токена
+// TODO перенести токен из query в headers
 // TODO убедись правильно ли ты используешь https://expressjs.com/ru/guide/using-middleware.html ? //Done
 
 
@@ -94,7 +95,12 @@ app.use('/api/posts/:id', async function (request, response, next) {
                 }
                 else{
                     // TODO эту ошибку должен увидеть пользователь, отправь ее на фронт
+                    next(401);
+                    /*
                     console.log("Это не ваш пост!");
+                    response.status(401);
+                    response.send("ssss");
+                    */
                 }
             })
             .catch(function (result) {
@@ -125,5 +131,13 @@ app.post('/api/posts', contr.addPost);//Done
 app.post('/entry', contr.checkEntry, contr.Entry);//Done
 
 app.post('/registration', contr.checkRegistration, contr.registration);//Done
+
+app.use(function (err, request, response, next) {
+   response.status(err).send("sfs");
+});
+
+app.use('*', function (request, response) {
+    response.status(404).send("sfs");
+});
 
 app.listen(8000);
