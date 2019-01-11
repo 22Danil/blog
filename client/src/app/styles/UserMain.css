@@ -21,58 +21,33 @@ body { margin: 0; }
 
 
 
-
-
-
-
-button {
-    cursor: pointer;
-}
-
-#popUpMsg-bg {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    background: rgba(0,0,0,0.5);
-}
-
-#popUpMsg {
-    top: 10%;
-    left: 50%;
-    margin-left: -150px;
-    width: 300px;
-    padding: 10px 5px;
-    background: white;
-    border-radius: 5px;
-    position: absolute;
-}
-
-#popUpMsg .close {
-    background: black;
+/* Modal Header */
+.modal-header {
+    padding: 0px 0px;
+    background-color: #aacbe8;
     color: white;
-    width: 20px;
-    height: 20px;
-    text-align: center;
-    border-radius: 50%;
-    position: absolute;
-    cursor: pointer;
-    top: -6px;
-    right: -7px;
+    height: 45px;
 }
 
-#popUpMsg .content {
-    text-align: center;
-    margin-bottom: 10px;
+/* Modal Body */
+.modal-body {padding: 16px 12px;}
+
+
+/* Modal Content */
+.modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 0;
+    border: 1px solid #888;
+    width: 80%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    animation-name: animatetop;
+    animation-duration: 0.4s
 }
 
-#popUpMsg button {
-    display: block;
-    margin: 0 auto;
-    border-radius: 3px;
-    border: 0;
-    background: lightgray;
-    padding: 5px 20px;
-    cursor: pointer;
+/* Add Animation */
+@keyframes animatetop {
+    from {top: -300px; opacity: 0}
+    to {top: 0; opacity: 1}
 }

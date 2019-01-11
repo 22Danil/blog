@@ -2,46 +2,37 @@ export class MyController {
     constructor ($timeout, friendsService, webDevTec, $http, $log, $location, $scope) {
       'ngInject'
 
-      //let that = this;
+
       this.title = "Вход";
-      //this.Name = "";
-      //this.Email = "";
-      //this.Password = "";
-        $scope.err_log = "";
-        $scope.err_pas = "";
+        let modal = document.getElementById('myModal');
+        let span = document.getElementsByClassName("close")[0];
+        span.onclick = function() {
+            modal.style.display = "none";
+            $scope.Header = "";
+            $scope.textBody = "";
+        };
 
       this.entry = function () {
         $http.post('/entry', {name: $scope.Name, email: $scope.Email, password: $scope.Password})
           .then(function (result) {
-            //$scope.books = result.data;
-            //console.log(result);
-            //this.err_log = "";
-            //this.err_pas = "";
-            if (result.data === "error_login") {
-                $scope.err_log = "Сначала нужно зарегистрироваться!";
-            }
-            else if (result.data === "error_password") {
-                $scope.err_pas = "Неверный пароль!";
-            }
-            else{
-                localStorage.setItem('Token', result.data.token);
-                localStorage.setItem('Name', result.data.name);
-                localStorage.setItem('Id', result.data.id);
-
-                $location.path("/main");
-                //console.log(result.data);
-            }
-
+              localStorage.setItem('Token', result.data.token);
+              localStorage.setItem('Name', result.data.name);
+              localStorage.setItem('Id', result.data.id);
+              $location.path("/main");
           })
           .catch(function (result) {
-            //console.log(result)
-            $log.log(result);
+              $scope.ErrorCode(result.status);
           });
       };
-
       this.registration = function () {
         $location.path("/registration");
-
-      }
+      };
+        $scope.ErrorCode = function (statusCode) {
+            if(statusCode === 401){
+                $scope.Header = "Error: " + statusCode;
+                $scope.textBody = "Неверный логин или пароль!";
+                modal.style.display = "block";
+            }
+        };
     }
 }

@@ -1,14 +1,29 @@
+<link href="../styles/registration.css" rel="stylesheet">
 
 <div>
     <h1>Регистрация</h1>
     <div>
         <p>Имя:</p>
-        <input type="text" name="name" ng-model="Name">{{err_log}}
+        <input type="text" name="name" ng-model="Name">
         <p>Email:</p>
         <input type="text" name="email" ng-model="Email">
         <p>Пароль:</p>
         <input type="text" name="passsword" ng-model="Password">
         <p></p>
         <button type="submit" name="click_button" value="registration" ng-click="regist.registration()"> Регистрация </button>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close">&times;</span>
+            <h3>{{Header}}</h3>
+        </div>
+        <div class="modal-body">
+            <p>{{textBody}}</p>
+        </div>
     </div>
 </div>

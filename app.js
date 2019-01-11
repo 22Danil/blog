@@ -1,13 +1,6 @@
-// TODO выпилить коментраии с кода
-//bower install angular#1.2.32
 // TODO исправить изменение поста (не сохраняет без изменений)
-
 const jwt = require('jsonwebtoken');
-// TODO такие переменные выноси в конфиг файл которые должни изменяться перед деплоем на сервер //Done
-// TODO переменная дублируеться в 2 местах //Done
 const config = require('./config/config');
-//const secret = 'shhhhh';
-// TODO импорт удобней использовать относительный //Done
 const db = require('./models/index');
 const Op = db.Sequelize.Op;
 let bodyParser = require('body-parser');
@@ -16,24 +9,16 @@ let bodyParser = require('body-parser');
 // const contr = require('./controllers/controle'); так
 // const contr = require('controllers/controle'); или так
 const contr = require('./controllers/controle');
-
 let express = require("express");
-
 let app = express();
 
 app.use(express.static(__dirname + "/views"));
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
-
-
 // TODO убрать "роль" из токена
 // TODO перенести токен из query в headers
-// TODO убедись правильно ли ты используешь https://expressjs.com/ru/guide/using-middleware.html ? //Done
-
-
 app.use('/api', async function (request, response, next) {
     try {
         let decoded;
@@ -89,33 +74,19 @@ app.use('/api/posts/:id', async function (request, response, next) {
             }
         })
             .then(function (result) {
-                //console.log(result);
                 if(result[0].dataValues.firstName === request.nameUser){
                     next();
                 }
                 else{
-                    // TODO эту ошибку должен увидеть пользователь, отправь ее на фронт
-                    next(401);
-                    /*
-                    console.log("Это не ваш пост!");
-                    response.status(401);
-                    response.send("ssss");
-                    */
+                    next(403);
                 }
             })
             .catch(function (result) {
-                console.log("1");
+                console.log("Ошибка: " + result);
             });
     }
 });
 
-
-
-/**
- * TODO путь для апи выбран некоректно посмотри вот этот гайд //Done
- * https://jazzteam.org/ru/technical-articles/restful-services-manual/
- * у тебя все апи принимает POST запрос, сверься с гайдом правильно ли это?
- */
 app.get('/api/search/:title', contr.searchPost);//Done
 
 app.put('/api/posts/:id', contr.savePost);//Done
@@ -133,11 +104,7 @@ app.post('/entry', contr.checkEntry, contr.Entry);//Done
 app.post('/registration', contr.checkRegistration, contr.registration);//Done
 
 app.use(function (err, request, response, next) {
-   response.status(err).send("sfs");
-});
-
-app.use('*', function (request, response) {
-    response.status(404).send("sfs");
+   response.status(err).send("Error");
 });
 
 app.listen(8000);

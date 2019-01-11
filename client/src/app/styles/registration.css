@@ -1,20 +1,24 @@
 
-body{
-    min-height: 100vh;
-    background: linear-gradient(to top, #757F9A, #D7DDE8);
-}
 
 
-.entryDiv{
 
-    top: 112px; /* Расстояние от верхнего края */
-    /*left: 35%; /* Расстояние от правого края */
-    width: 250px; /* Ширина элемента в пикселах */
-    height: 280px;
-    border: 2px solid rgba(34, 62, 232, 0.21);
-    margin:auto;
 
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* Modal Header */
 .modal-header {

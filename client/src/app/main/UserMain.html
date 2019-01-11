@@ -18,9 +18,21 @@
         <textarea rows="5" cols="45" name="ADD" ng-disabled="false" class="addPost" ng-model="textForPost">{{textForPost}}</textarea>
         <p></p>
         <input type="button" ng-click="newPost()" value="Добавить новую запись">
-
     </div>
 
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h3>{{Header}}</h3>
+            </div>
+            <div class="modal-body">
+                <p>{{textBody}}</p>
+            </div>
+        </div>
+    </div>
 
     <div id="content">
         <div ng-repeat="book in books">
