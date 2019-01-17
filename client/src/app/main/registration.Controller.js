@@ -2,6 +2,9 @@ export class MyRegistration {
   constructor ($timeout, friendsService, webDevTec, $http, $log, $scope, $location) {
     'ngInject'
 
+      $scope.Name = "";
+      $scope.Email = "";
+      $scope.Password = "";
 
       $scope.Header = "";
       $scope.textBody = "";

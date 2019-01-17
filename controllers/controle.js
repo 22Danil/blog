@@ -1,94 +1,91 @@
 db = require(__dirname + "/../models/index");
 const jwt = require('jsonwebtoken');
 const config = require('./../config/config');
-
 module.exports = {
     posts: async function(request, response){
         let result = await db.post.findAll({
             where:{
-                firstName:request.nameUser
+                firstName:request.user.firstName
             }
         });
-        response.json(result);
+        response.json({result:result});
     },
-    addPost: async function(request, response){
+    addPost: async function(request, response, next){
         try{
-            let result = await db.post.create({firstName: request.nameUser, postText:request.body.textPost, titleText: request.body.textTitle});
-            return response.json(result);
+            let result = await db.post.create({firstName: request.user.firstName, postText:request.body.textPost, titleText: request.body.textTitle});
+            return response.json({result:result});
         }
         catch (e) {
-            console.log(e);
+            next(e);
         }
     },
     allPost: async function(request, response){
         let result = await db.post.findAll();
-        response.json(result);
+        response.json({result:result});
     },
-    delPost: async function(request, response){
+    delPost: async function(request, response, next){
         try{
-                await db.post.destroy({
+                let result = await db.post.destroy({
                 where:{
-                    id:request.params.id
+                    id: request.params.id
                 }
             });
-            return response.json("OK");
+                if(result === 0){
+                    throw "MyError";
+                }
+            return response.json({user: request.user.firstName});
         }
         catch (e) {
-            console.log(e);
+            next(e);
         }
     },
-    searchPost: async function(request, response){
+    searchPost: async function(request, response, next){
         try{
             let result = await db.post.findAll({
                 where:{
                     titleText: request.params.title
                 }
             });
-            return response.json(result);
+            if(result.length === 0){
+                throw "MyError";
+            }
+            return response.json({result:result});
         }
         catch (e) {
-            console.log(e);
+            next(e);
         }
     },
-    savePost: async function(request, response) {
+    savePost: async function(request, response, next) {
         try{
-            await db.post.update({postText: request.body.newText},{
+            let result = await db.post.update({postText: request.body.newText},{
                 where:{
                     id: request.params.id
                 }
             });
+            if(result[0] === 0){
+                throw "MyError";
+            }
             return response.json(); //TODO можно ли так делать?
         }
         catch (e) {
-            console.log(e);
+            next(e);
         }
     },
-    Entry: async function(request, response){
+    Entry: async function(request, response, next){
         try {
             let userResult = await db.user.findOne({
                 where:{
                     firstName:request.body.name,
                 }
             });
-            const result = await db.porpuse.findOne({
-                where: {
-                    userId: userResult.dataValues.id
-                }
-            });
-            const role = await db.role.findOne({
-                where: {
-                    id: result.dataValues.nominationId
-                }
-            });
             const token = jwt.sign({
                 name: userResult.dataValues.firstName,
                 id: userResult.dataValues.id,
-                role: role.dataValues.nomination
+                //role: role.dataValues.nomination
             }, config.secret);
             return response.json({token: token, name: userResult.dataValues.firstName, id: userResult.dataValues.id});
         } catch (e) {
-            // TODO обработчик ошибок стоит делать один на весь контролер, а лучше вынести его в миделвар
-            console.log(e);
+            next(e);
         }
     },
     checkEntry: async function(request, response, next){
@@ -109,10 +106,10 @@ module.exports = {
             }
         }
         catch (e) {
-            console.log(e);
+            next(e);
         }
     },
-    registration: async function(request, response){
+    registration: async function(request, response, next){
         try{
             let sault = Math.random().toString (36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
             let result = await db.user.create({firstName:request.body.name, email:request.body.email, password:require("crypto").createHash("sha256").update(request.body.password + sault).digest("base64"), sault:sault});
@@ -120,11 +117,14 @@ module.exports = {
             return response.json();
         }
         catch (e) {
-            console.log(e);
+            next(e);
         }
     },
     checkRegistration:async function(request, response, next){
         try{
+            if(request.body.name === "" || request.body.email === "" || request.body.passsword === ""){
+                next(401)
+            }
             let result = await db.user.findAll({
                 where:{
                     firstName:request.body.name
@@ -138,7 +138,7 @@ module.exports = {
             }
         }
         catch (e) {
-            console.log(e)
+            next(e);
         }
     }
 };

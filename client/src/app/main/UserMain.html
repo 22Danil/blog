@@ -1,8 +1,93 @@
+<link href="../styles/UserMain.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+
+<style>
+    .box {
+        color:white;
+        padding:10px;
+        text-align:center;
+        border-style: inset;
+    }
+
+    .green {
+        background:green;
+        /*position: static;*/
+        /*margin-top: 500px;*/
+    }
+
+    .blue {
+        background:blue;
+        /*height: 60%;*/
+        /*position: absolute;*/
+    }
+</style>
+
+<div layout="row" style="height: 100%; min-height: 100vh; width: 100%;" >
+    <div id="main">
+        <h1>
+            <md-button class="md-fab md-primary" aria-label="Use Android">
+                <md-icon >person</md-icon>
+            </md-button>
+            {{nameUser}}
+        </h1>
+        <md-button class="md-raised md-cornered" ng-click="Posts()">Мои записи</md-button>
+        <md-button class="md-raised md-cornered" ng-click="AllPosts()">Все записи</md-button>
+        <p></p>
+
+        <div id="search">
+            <p class="stroke">Поиск</p>
+            <md-input-container class="md-block">
+                <md-icon class="name">search</md-icon>
+                <input name="name" ng-model="textForSearch" value={{textForSearch}} type="text" placeholder="Название поста..." style="width: 50px" >
+                <md-button class="md-raised md-cornered" ng-click="Search()" style="margin-left: 50px">Найти</md-button>
+            </md-input-container>
+
+        </div>
 
 
-    <link href="../styles/UserMain.css" rel="stylesheet">
 
-    <div>
+    </div>
+    <div layout="column" style="width: 95%;">
+        <md-content  flex style="height: 70%; max-height: 70%; " md-colors="{background: 'grey-50-0.0'}">
+
+            <div style="max-height: 100px; ">
+            <div ng-repeat="book in books" style="box-shadow: inset 0 0 6px; width: 645px; margin: 2px; border-radius: 10px; padding: 10px;">
+                <h5>Название: {{book.titleText}}  Автор: {{book.firstName}}</h5>
+                <textarea rows="5" cols="45" name={{countId}} disabled="true" ng-model="book.postText" class="multi-files{{book.id}}">{{book.postText}}</textarea>
+                <br>
+                <input type="button" name={{book.id}} ng-click="editPost(book.id)" value="Изменить">
+                <input type="button" ng-click="savePost(book.id)" value="Сохранить">
+                <input type="button" ng-click="delPost(book.id, book.firstName)" value="Удалить">
+                <p></p>
+            </div>
+            </div>
+
+
+        </md-content>
+        <div style="height: 30%; width: 95%; max-height: 30%">
+            <div id="add">
+                <p class="stroke">Добавление новой записи</p>
+                <label>Название: </label>
+                <input type="text" ng-model="textForTitle" value={{textForTitle}} class="addPost">
+                <p></p>
+                <textarea placeholder="Текст..." rows="5" cols="45" name="ADD" ng-disabled="false" class="addPost" ng-model="textForPost">{{textForPost}}</textarea>
+                <p></p>
+                <md-button class="md-raised md-cornered" ng-click="newPost()" style="margin: 0px">Добавить</md-button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+    <!--<div id="main">
         <h1>Добро пожаловать {{nameUser}}</h1>
         <input type="button" ng-click="Posts()" value="Мои записи">
         <p></p>
@@ -20,6 +105,20 @@
         <input type="button" ng-click="newPost()" value="Добавить новую запись">
     </div>
 
+    <div id="content">
+        <div ng-repeat="book in books">
+            <h5>Название:{{book.titleText}} Автор:{{book.firstName}}</h5>
+            <textarea rows="5" cols="45" name={{countId}} disabled="true" ng-model="book.postText" class="multi-files{{book.id}}">{{book.postText}}</textarea>
+            <br>
+            <input type="button" name={{book.id}} ng-click="editPost(book.id)" value="Изменить">
+            <input type="button" ng-click="savePost(book.id)" value="Сохранить">
+            <input type="button" ng-click="delPost(book.id, book.firstName)" value="Удалить">
+            <p></p>
+        </div>
+    </div>-->
+
+
+
     <!-- The Modal -->
     <div id="myModal" class="modal">
         <!-- Modal content -->
@@ -31,17 +130,5 @@
             <div class="modal-body">
                 <p>{{textBody}}</p>
             </div>
-        </div>
-    </div>
-
-    <div id="content">
-        <div ng-repeat="book in books">
-            <h5>Название:{{book.titleText}}  Автор:{{book.firstName}}</h5>
-            <textarea rows="5" cols="45" name={{countId}} disabled="true" ng-model="book.postText" class="multi-files{{book.id}}">{{book.postText}}</textarea>
-            <br>
-            <input type="button" name={{book.id}} ng-click="editPost(book.id)" value="Изменить">
-            <input type="button" ng-click="savePost(book.id)" value="Сохранить">
-            <input type="button" ng-click="delPost(book.id)" value="Удалить">
-            <p></p>
         </div>
     </div>

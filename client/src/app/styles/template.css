@@ -1,20 +1,24 @@
-
 body{
     min-height: 100vh;
-    background: linear-gradient(to top, #757F9A, #D7DDE8);
+    background: linear-gradient(to bottom left, #1c92d2, #f2fcfe);
+}
+#entryDiv{
+    margin: 0;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%)
+}
+#Title{
+    padding-bottom: 50px;
+    margin: 0;
+    position: absolute;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%)
 }
 
-
-.entryDiv{
-
-    top: 112px; /* Расстояние от верхнего края */
-    /*left: 35%; /* Расстояние от правого края */
-    width: 250px; /* Ширина элемента в пикселах */
-    height: 280px;
-    border: 2px solid rgba(34, 62, 232, 0.21);
-    margin:auto;
-
-}
 
 /* Modal Header */
 .modal-header {
@@ -46,3 +50,29 @@ body{
     from {top: -300px; opacity: 0}
     to {top: 0; opacity: 1}
 }
+
+/*BUTTON*/
+.md-button {
+    padding: 0 6px 0 6px;
+    margin: 6px 8px 6px 8px;
+    min-width: 88px;
+    border-radius: 3px;
+    font-size: 14px;
+    text-align: center;
+    text-transform: uppercase;
+    text-decoration:none;
+    border: none;
+    outline: none;
+}
+
+.md-button.md-cornered {
+    border-radius: 0;
+}
+
+
+
+
+md-input-container:not(.md-input-invalid) > md-icon.email {
+    color: green; }
+md-input-container.md-input-invalid > md-icon.email {
+    color: red; }

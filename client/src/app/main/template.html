@@ -1,19 +1,30 @@
-
 <link href="../styles/template.css" >
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
 
+<div id="entryDiv">
 
-<div class="entryDiv">
+    <div id="Title">
+    <h1>Вход</h1>
+    </div>
 
-            <h1>{{temp.title}}</h1>
-                <p>Имя:</p>
-                <input type="text" name="name" ng-model="Name">
-                <p>Email:</p>
-                <input type="text" name="email" ng-model="Email">
-                <p>Пароль:</p>
-                <input type="text" name="passsword" ng-model="Password">
-                <p></p>
-                <button type="submit" name="click_button" value="entry" ng-click="temp.entry()"> Вход </button>
-                <button type="submit" name="click_button" value="toRegistration" ng-click="temp.registration()">Регистрация</button>
+    <md-input-container class="md-block">
+        <md-icon class="name">person</md-icon>
+        <input name="name" ng-model="Name" type="text" placeholder="Логин" ng-required="true">
+    </md-input-container>
+
+    <md-input-container class="md-block">
+        <md-icon class="email">email</md-icon>
+        <input name="email" ng-model="Email" type="email" placeholder="Почта (обязательно)" ng-required="true">
+    </md-input-container>
+
+    <md-input-container class="md-block">
+        <md-icon class="password">vpn_key</md-icon>
+        <input name="passsword" ng-model="Password" type="password" placeholder="Пароль" ng-required="true">
+    </md-input-container>
+
+    <md-button class="md-raised md-cornered" type="submit" name="click_button" value="entry" ng-click="temp.entry()" style="background-color: MediumAquamarine"> Вход </md-button>
+    <md-button class="md-raised md-cornered" type="submit" name="click_button" value="toRegistration" ng-click="temp.registration()" style="background-color: MediumAquamarine"> Регистрация </md-button>
 
 </div>
 

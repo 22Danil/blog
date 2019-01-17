@@ -3,7 +3,6 @@ export class MyController {
       'ngInject'
 
 
-      this.title = "Вход";
         let modal = document.getElementById('myModal');
         let span = document.getElementsByClassName("close")[0];
         span.onclick = function() {

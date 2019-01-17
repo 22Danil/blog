@@ -13,7 +13,6 @@ export class MainUserController {
             $scope.textBody = "";
         };
 
-
         $scope.Header = "";
         $scope.textBody = "";
         $scope.nameUser = localStorage.getItem("Name");
@@ -38,8 +37,9 @@ export class MainUserController {
                 console.log("id несовпали!")
             }
             else{
-                $http.put('/api/posts/' + id, {token: localStorage.getItem("Token"), newText: savePost[0].textContent, postID: id})
-                    .then(function () {
+                $http.put('/api/posts/' + id, {newText: savePost[0].textContent, postID: id}, {headers: {token: localStorage.getItem("Token")}})
+                    .then(function (result) {
+                        console.log(result);
                         savePost[0].disabled = true;
                     })
                     .catch(function (result) {
@@ -50,34 +50,34 @@ export class MainUserController {
         };
         $scope.newPost = function () {
             let text = document.getElementsByClassName("addPost");
-            if(text[1].textContent !== ""){
-                $http.post('/api/posts', {token: localStorage.getItem("Token"), textPost: text[1].textContent, textTitle: $scope.textForTitle})
+            if(text[1].textContent !== "" && text[0].value !== ""){
+                $http.post('/api/posts', {textPost: text[1].textContent, textTitle: $scope.textForTitle}, {headers: {token: localStorage.getItem("Token")}})
                     .then(function (result) {
-                        $scope.books.push(result.data)
+                        if($scope.books){
+                            $scope.books.push(result.data.result)
+                        }
                     })
                     .catch(function (result) {
+                        console.log(result);
                         $scope.ErrorCode(result.status);
                     });
             }
-
         };
         $scope.Posts = function () {
             //console.log(localStorage.getItem("Token"));
-            $http.get('/api/user/'+ localStorage.getItem("Id") + '/posts', {params: {token: localStorage.getItem("Token")}})
+            $http.get('/api/user/'+ localStorage.getItem("Id") + '/posts', {headers: {token: localStorage.getItem("Token")}})
                 .then(function (result) {
-                    $scope.books = result.data;
-                    console.log($scope.books);
+                    $scope.books = result.data.result;
                 })
                 .catch(function (result) {
                     $scope.ErrorCode(result.status);
                 });
         };
         $scope.AllPosts = function () {
-            $http.get('/api/posts', {params: {token: localStorage.getItem("Token")}})
+            $http.get('/api/posts', {headers: {token: localStorage.getItem("Token")}})
                 .then(function (result) {
-                    console.log(result.data);
-                    $scope.books = result.data;
-
+                    console.log(result);
+                    $scope.books = result.data.result;
                 })
                 .catch(function (result) {
                     $scope.ErrorCode(result.status);
@@ -85,24 +85,23 @@ export class MainUserController {
         };
         $scope.Search = function(){
             if($scope.textForSearch !== ""){
-                $http.get('/api/search/' + $scope.textForSearch, {params: {token: localStorage.getItem("Token")}})
+                $http.get('/api/search/' + $scope.textForSearch, {headers: {token: localStorage.getItem("Token")}})
                     .then(function (result) {
-                        console.log(result.data);
-                        $scope.books = result.data;
+                        console.log(result);
+                        $scope.books = result.data.result;
                     })
                     .catch(function (result) {
                         $scope.ErrorCode(result.status);
                     })
             }
-
         };
-        $scope.delPost = function (id) {
-            $http.delete('/api/posts/'+ id, {params: {token: localStorage.getItem("Token")}})
+        $scope.delPost = function (id, name) {
+            $http.delete('/api/posts/'+ id, {headers: {token: localStorage.getItem("Token")}})
                 .then(function (result) {
-                    console.log(result);
-                    if(result.data === "OK"){
+                    if(result.data.user === name){
                         $scope.Posts();
                     }
+                    $scope.AllPosts();
                 })
                 .catch(function (result) {
                     $scope.ErrorCode(result.status);
@@ -117,6 +116,16 @@ export class MainUserController {
             else if(statusCode === 401){
                 $scope.Header = "Error: " + statusCode;
                 $scope.textBody = "Неверный логин или пароль!";
+                modal.style.display = "block";
+            }
+            else if(statusCode === 400){
+                $scope.Header = "Error: " + statusCode;
+                $scope.textBody = "Неверный запрос!";
+                modal.style.display = "block";
+            }
+            else if(statusCode === 500){
+                $scope.Header = "Error: " + statusCode;
+                $scope.textBody = "Внутренняя ошибка сервера!";
                 modal.style.display = "block";
             }
         };

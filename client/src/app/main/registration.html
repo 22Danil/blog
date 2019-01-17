@@ -1,16 +1,29 @@
 <link href="../styles/registration.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
 
-<div>
+<div id="registration">
+        <div id="Title">
     <h1>Регистрация</h1>
+        </div>
     <div>
-        <p>Имя:</p>
-        <input type="text" name="name" ng-model="Name">
-        <p>Email:</p>
-        <input type="text" name="email" ng-model="Email">
-        <p>Пароль:</p>
-        <input type="text" name="passsword" ng-model="Password">
-        <p></p>
-        <button type="submit" name="click_button" value="registration" ng-click="regist.registration()"> Регистрация </button>
+        <md-input-container class="md-block">
+            <md-icon class="name">person</md-icon>
+            <input name="name" ng-model="Name" type="text" placeholder="Логин" ng-required="true">
+        </md-input-container>
+
+        <md-input-container class="md-block">
+            <md-icon class="email">email</md-icon>
+            <input name="email" ng-model="Email" type="email" placeholder="Почта (обязательно)" ng-required="true">
+        </md-input-container>
+
+        <md-input-container class="md-block">
+            <md-icon class="password">vpn_key</md-icon>
+            <input name="passsword" ng-model="Password" type="password" placeholder="Пароль" ng-required="true">
+        </md-input-container>
+        <div id="but">
+            <md-button class="md-raised md-cornered" type="submit" name="click_button" value="registration" ng-click="regist.registration()" style="background-color: MediumAquamarine"> Регистрация </md-button>
+        </div>
     </div>
 </div>
 

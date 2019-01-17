@@ -15,11 +15,11 @@ import { WebDevTecService } from '../app/components/webDevTec/webDevTec.service'
 import { FriendsService } from "../app/friend/friend.service";
 import { NavbarDirective } from '../app/components/navbar/navbar.directive';
 import { MalarkeyDirective } from '../app/components/malarkey/malarkey.directive';
-import { PostAllDirective } from '../app//PostAll/directivePostAll.directive';
 
 
 
-angular.module('yesno', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngMessages', 'ngAria', 'ngResource', 'ui.router', 'toastr'])
+
+angular.module('yesno', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngMessages', 'ngAria', 'ngResource', 'ui.router', 'toastr', 'ngMaterial', 'ngMessages'])
   .constant('malarkey', malarkey)
   .constant('moment', moment)
   .config(config)
@@ -36,5 +36,4 @@ angular.module('yesno', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngM
   .controller('FriendController', FriendController)
 
   .directive('acmeNavbar', NavbarDirective)
-  .directive('acmeMalarkey', MalarkeyDirective)
-  .directive('post', PostAllDirective);
+  .directive('acmeMalarkey', MalarkeyDirective);
