@@ -13,6 +13,8 @@ export class MainUserController {
             $scope.textBody = "";
         };
 
+        $scope.test1 = true;
+
         $scope.Header = "";
         $scope.textBody = "";
         $scope.nameUser = localStorage.getItem("Name");
@@ -24,14 +26,30 @@ export class MainUserController {
         let postEditId;
         let postEditText;
 
-        $scope.editPost = function (id) {
-            let editPost = document.getElementsByClassName("multi-files"+id);
+        $scope.editPost = function (id){
+
+            $scope.test1 = false;
+            /*$scope.Posts();*/
+
+            let test = document.getElementsByClassName("md-block"+id);
+
+            console.log(test[0]);
+
+            /*let test1 = document.getElementsByClassName("md-block");
+            console.log(test1);*/
+
+
+
+            /*let editPost = document.getElementsByClassName("multi-files"+id);
+            console.log(editPost);
+
             postEditId = id;
             postEditText = editPost[0].textContent;
-            editPost[0].attributes.removeNamedItem("disabled");
+            editPost[0].attributes.removeNamedItem("disabled");*/
 
         };
         $scope.savePost = function(id){
+            $scope.test1 = true;
             let savePost = document.getElementsByClassName("multi-files"+id);
             if(id !== postEditId){
                 console.log("id несовпали!")
