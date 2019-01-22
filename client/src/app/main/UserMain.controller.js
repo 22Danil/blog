@@ -13,8 +13,9 @@ export class MainUserController {
             $scope.textBody = "";
         };
 
-        $scope.test1 = true;
-
+        $scope.titleMain = "Здесь будут ваши записи";
+        $scope.forEditPost = false;
+        $scope.books = [];
         $scope.Header = "";
         $scope.textBody = "";
         $scope.nameUser = localStorage.getItem("Name");
@@ -26,42 +27,27 @@ export class MainUserController {
         let postEditId;
         let postEditText;
 
-        $scope.editPost = function (id){
-
-            $scope.test1 = false;
-            /*$scope.Posts();*/
-
-            let test = document.getElementsByClassName("md-block"+id);
-
-            console.log(test[0]);
-
-            /*let test1 = document.getElementsByClassName("md-block");
-            console.log(test1);*/
-
-
-
-            /*let editPost = document.getElementsByClassName("multi-files"+id);
-            console.log(editPost);
-
+        $scope.editPost = function (id, textContent){
             postEditId = id;
-            postEditText = editPost[0].textContent;
-            editPost[0].attributes.removeNamedItem("disabled");*/
+            postEditText = textContent;
+            $scope.forEditPost = true;
 
         };
-        $scope.savePost = function(id){
-            $scope.test1 = true;
-            let savePost = document.getElementsByClassName("multi-files"+id);
+        $scope.savePost = function(id, textContent){
+            console.log(textContent);
             if(id !== postEditId){
-                console.log("id несовпали!")
+                $scope.ErrorCode(400);
+            }
+            else if(textContent === postEditText){
+                $scope.forEditPost = false;
             }
             else{
-                $http.put('/api/posts/' + id, {newText: savePost[0].textContent, postID: id}, {headers: {token: localStorage.getItem("Token")}})
+                $http.put('/api/posts/' + id, {newText: textContent, postID: id}, {headers: {token: localStorage.getItem("Token")}})
                     .then(function (result) {
-                        console.log(result);
-                        savePost[0].disabled = true;
+                        $scope.forEditPost = false;
                     })
                     .catch(function (result) {
-                        savePost[0].disabled = true;
+                        $scope.forEditPost = true;
                         $scope.ErrorCode(result.status);
                     })
             }
@@ -72,20 +58,21 @@ export class MainUserController {
                 $http.post('/api/posts', {textPost: text[1].textContent, textTitle: $scope.textForTitle}, {headers: {token: localStorage.getItem("Token")}})
                     .then(function (result) {
                         if($scope.books){
-                            $scope.books.push(result.data.result)
+                            $scope.books.push(result.data.result);
+                            $scope.textForPost = "";
+                            $scope.textForTitle = "";
                         }
                     })
                     .catch(function (result) {
-                        console.log(result);
                         $scope.ErrorCode(result.status);
                     });
             }
         };
         $scope.Posts = function () {
-            //console.log(localStorage.getItem("Token"));
             $http.get('/api/user/'+ localStorage.getItem("Id") + '/posts', {headers: {token: localStorage.getItem("Token")}})
                 .then(function (result) {
-                    $scope.books = result.data.result;
+                    $scope.titleMain = "Ваши записи";
+                    $scope.books = result.data.result[0];
                 })
                 .catch(function (result) {
                     $scope.ErrorCode(result.status);
@@ -94,8 +81,8 @@ export class MainUserController {
         $scope.AllPosts = function () {
             $http.get('/api/posts', {headers: {token: localStorage.getItem("Token")}})
                 .then(function (result) {
-                    console.log(result);
-                    $scope.books = result.data.result;
+                    $scope.titleMain = "Записи всех пользвателей";
+                    $scope.books = result.data.result[0];
                 })
                 .catch(function (result) {
                     $scope.ErrorCode(result.status);
@@ -105,11 +92,12 @@ export class MainUserController {
             if($scope.textForSearch !== ""){
                 $http.get('/api/search/' + $scope.textForSearch, {headers: {token: localStorage.getItem("Token")}})
                     .then(function (result) {
-                        console.log(result);
-                        $scope.books = result.data.result;
+                        $scope.books = result.data.result[0];
+                        $scope.textForSearch = "";
                     })
                     .catch(function (result) {
                         $scope.ErrorCode(result.status);
+                        $scope.textForSearch = "";
                     })
             }
         };

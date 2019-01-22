@@ -1,6 +1,6 @@
-const config = {
+const configg = {
 
     secret: 'shhhhh'
 
 };
-module.exports = config;
+module.exports = configg;

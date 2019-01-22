@@ -2,28 +2,8 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
 
-<style>
-    .box {
-        color:white;
-        padding:10px;
-        text-align:center;
-        border-style: inset;
-    }
 
-    .green {
-        background:green;
-        /*position: static;*/
-        /*margin-top: 500px;*/
-    }
-
-    .blue {
-        background:blue;
-        /*height: 60%;*/
-        /*position: absolute;*/
-    }
-</style>
-
-<div layout="row" style="height: 100%; min-height: 100vh; width: 100%;" >
+<div layout="row" id="left" >
     <div id="main">
         <h1>
             <md-button class="md-fab md-primary" aria-label="Use Android">
@@ -44,52 +24,35 @@
             </md-input-container>
 
         </div>
-
-        <!--<div id="search1">
-            <p class="stroke">Поиск</p>
-            <div ng-repeat="book in books" style="box-shadow: inset 0 0 6px; width: 645px; margin: 2px; border-radius: 10px; padding: 10px;">
-                <md-input-container class="md-block11">
-                    <label>Biography</label>
-                    <textarea ng-model="book.postText" disabled md-maxlength="150" rows="5" md-select-on-focus></textarea>
-                </md-input-container>
-            </div>
-
-        </div>-->
-
     </div>
-    <div layout="column" style="width: 95%;">
+    <div layout="column" style="width: 100%;">
         <md-content  flex style="height: 68%; max-height: 68%;" md-colors="{background: 'grey-50-0.0'}">
             <div style="max-height: 100px; ">
-            <div ng-repeat="book in books" style="box-shadow: inset 0 0 6px; width: 645px; margin: 2px; border-radius: 10px; padding: 10px;">
+                <p id="titleMain" align="center">{{titleMain}}</p>
+            <div ng-repeat="book in books" id="arrow">
                 <h5>Название: {{book.titleText}}  Автор: {{book.firstName}}</h5>
-                <!--<textarea rows="5" cols="45" name={{countId}} disabled="true" ng-model="book.postText" class="multi-files{{book.id}}">{{book.postText}}</textarea>
-                <br>-->
-                    <md-input-container class="md-block" >
+                    <md-input-container class="md-block" style="margin-bottom: 0px">
                         <label>Текст</label>
-                        <fieldset ng-disabled="!test1">
-                            <textarea ng-model="book.postText" ng-bind="expression" md-maxlength="150" rows="5" md-select-on-focus ></textarea>
+                        <fieldset ng-disabled="!forEditPost">
+                            <textarea ng-model="book.postText" ng-bind="expression" rows="5" md-select-on-focus ></textarea>
                         </fieldset>
 
                     </md-input-container>
 
-
-                <input type="button"  name={{book.id}} ng-click="editPost(book.id)" value="Изменить">
-                <input type="button" ng-click="savePost(book.id)" value="Сохранить">
-                <input type="button" ng-click="delPost(book.id, book.firstName)" value="Удалить">
-                <p></p>
+                    <md-button class="md-raised md-cornered" name={{book.id}} ng-click="editPost(book.id, book.postText)">Изменить</md-button>
+                    <md-button class="md-raised md-cornered" ng-click="savePost(book.id, book.postText)">Сохранить</md-button>
+                    <md-button class="md-raised md-cornered" ng-click="delPost(book.id, book.firstName)">Удалить</md-button>
             </div>
             </div>
-
-
         </md-content>
-        <div style="height: 30%; width: 95%; max-height: 30%">
+
+        <div id="bot">
             <div id="add">
                 <p class="stroke">Добавление новой записи</p>
                 <md-input-container style="margin-top: 5px; margin-bottom: 0px">
                     <input type="text" ng-model="textForTitle" value={{textForTitle}} class="addPost" placeholder="Название поста..." style="width: 135px;" >
                 </md-input-container>
                 <p></p>
-                <!--<textarea placeholder="Текст..." rows="5" cols="45" name="ADD" ng-disabled="false" class="addPost" ng-model="textForPost">{{textForPost}}</textarea>-->
                 <md-input-container class="md-block" style="margin-bottom: 0px">
                     <label>Текст</label>
                     <textarea  md-select-on-focus style="max-height: 10vh; overflow-y: auto;" rows="3" cols="45" name="ADD" class="addPost" ng-model="textForPost">{{textForPost}}</textarea>
@@ -100,46 +63,6 @@
         </div>
     </div>
 </div>
-
-
-
-
-
-
-
-
-
-    <!--<div id="main">
-        <h1>Добро пожаловать {{nameUser}}</h1>
-        <input type="button" ng-click="Posts()" value="Мои записи">
-        <p></p>
-        <input type="button" ng-click="AllPosts()" value="Все записи">
-        <p></p>
-        <input type="button" ng-click="Search()" value="Поиск">
-        <input type="text" ng-model="textForSearch" value={{textForSearch}} class="SearchPost">
-        <p></p>
-        <p></p>
-        <p></p>
-        <input type="text" ng-model="textForTitle" value={{textForTitle}} class="addPost">
-        <p></p>
-        <textarea rows="5" cols="45" name="ADD" ng-disabled="false" class="addPost" ng-model="textForPost">{{textForPost}}</textarea>
-        <p></p>
-        <input type="button" ng-click="newPost()" value="Добавить новую запись">
-    </div>
-
-    <div id="content">
-        <div ng-repeat="book in books">
-            <h5>Название:{{book.titleText}} Автор:{{book.firstName}}</h5>
-            <textarea rows="5" cols="45" name={{countId}} disabled="true" ng-model="book.postText" class="multi-files{{book.id}}">{{book.postText}}</textarea>
-            <br>
-            <input type="button" name={{book.id}} ng-click="editPost(book.id)" value="Изменить">
-            <input type="button" ng-click="savePost(book.id)" value="Сохранить">
-            <input type="button" ng-click="delPost(book.id, book.firstName)" value="Удалить">
-            <p></p>
-        </div>
-    </div>-->
-
-
 
     <!-- The Modal -->
     <div id="myModal" class="modal">

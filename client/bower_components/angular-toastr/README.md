@@ -112,7 +112,7 @@ A toast has a `isOpened` flag to see whether it is opened or not.
 You can customize the entire library like:
 
 ```javascript
-app.config(function(toastrConfig) {
+app.configg(function(toastrConfig) {
   angular.extend(toastrConfig, {
     allowHtml: false,
     autoDismiss: false,

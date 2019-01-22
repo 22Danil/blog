@@ -19,7 +19,7 @@ import { MalarkeyDirective } from '../app/components/malarkey/malarkey.directive
 
 
 
-angular.module('yesno', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngMessages', 'ngAria', 'ngResource', 'ui.router', 'toastr', 'ngMaterial', 'ngMessages'])
+angular.module('blog', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngMessages', 'ngAria', 'ngResource', 'ui.router', 'toastr', 'ngMaterial', 'ngMessages'])
   .constant('malarkey', malarkey)
   .constant('moment', moment)
   .config(config)

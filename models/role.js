@@ -1,11 +1,10 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const role = sequelize.define('role', {
-    nomination: DataTypes.STRING
+    nomination: DataTypes.TEXT
   }, {});
   role.associate = function(models) {
-    // TODO выпилить коментраии с кода
-    // associations can be defined here
+    role.belongsTo(models.purpose, {foreignKey: 'id'});
   };
   return role;
 };

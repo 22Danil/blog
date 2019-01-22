@@ -1,11 +1,9 @@
+// TODO (FRONT) сделать что бы фон изменялся под размер данных
 const jwt = require('jsonwebtoken');
-const config = require('./config/config');
+const config = require('./config/configg');
 const db = require('./models/index');
 const Op = db.Sequelize.Op;
 let bodyParser = require('body-parser');
-// TODO импорт удобней использовать относительный вот так //Done // В чем разница??
-// const contr = require('./controllers/controle'); так
-// const contr = require('controllers/controle'); или так
 const contr = require('./controllers/controle');
 let express = require("express");
 let app = express();
@@ -45,11 +43,10 @@ app.use('/api', async function (request, response, next) {
         next(e);
     }
 });
-
 app.use('/api/posts/:id', async function (request, response, next) {
-    const result = await db.porpuse.findOne({
+    const result = await db.purpose.findOne({
         where: {
-            userId: request.user.id
+            userID: request.user.id
         }
     });
     const role = await db.role.findOne({
@@ -67,7 +64,7 @@ app.use('/api/posts/:id', async function (request, response, next) {
                     id:request.params.id
                 }
             });
-            if(result[0].dataValues.firstName === request.user.firstName){
+            if(result[0].dataValues.userID === request.user.id){
                 next();
             }
             else{
@@ -77,41 +74,16 @@ app.use('/api/posts/:id', async function (request, response, next) {
         catch (e) {
             next(e);
         }
-
-/*
-        await db.post.findAll({
-            where:{
-                id:request.params.id
-            }
-        })
-            .then(function (result) {
-                if(result[0].dataValues.firstName === request.user.firstName){
-                    next();
-                }
-                else{
-                    next(403);
-                }
-            })
-            .catch(function (result) {
-                console.log("Ошибка: " + result);
-            });*/
     }
 });
 
 app.get('/api/search/:title', contr.searchPost);
-
 app.put('/api/posts/:id', contr.savePost);
-
 app.delete('/api/posts/:id', contr.delPost);
-
 app.get('/api/posts', contr.allPost);
-
 app.get('/api/user/:id/posts', contr.posts);
-
 app.post('/api/posts', contr.addPost);
-
 app.post('/entry', contr.checkEntry, contr.Entry);
-
 app.post('/registration', contr.checkRegistration, contr.registration);
 
 app.use(function (err, request, response, next) {

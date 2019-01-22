@@ -2,8 +2,23 @@
 body {
     margin: 0;
     }
-
-
+#bot{
+    height: 30%;
+    width: 95%;
+    max-height: 30%;
+}
+#arrow{
+    box-shadow: inset 0 0 6px;
+    width: 817px;
+    margin: 2px;
+    border-radius: 10px;
+    padding: 10px;
+}
+#left{
+    height: 100%;
+    min-height: 100vh;
+    width: 90%;
+}
 #content {
     top: 82px; /* Расстояние от верхнего края */
     right: 50px; /* Расстояние от правого края */
@@ -61,6 +76,7 @@ body {
     box-shadow: inset 0 0 6px; /* Тень */
     padding: 10px; /* Поля вокруг текста */
     border-radius: 10px; /* Радиус скругления */
+    width: 820px;
 }
 #search{
     box-shadow: inset 0 0 6px; /* Тень */
@@ -74,6 +90,13 @@ body {
     padding: 10px; /* Поля вокруг текста */
     border-radius: 10px; /* Радиус скругления */
     width: 300px;
+    margin: 5px;
+}
+#titleMain{
+    padding: 10px; /* Поля вокруг текста */
+    border-radius: 10px; /* Радиус скругления */
+    font: bold 16px Arial, sans-serif;
+    color: #0d3967;
     margin: 5px;
 }
 .stroke {

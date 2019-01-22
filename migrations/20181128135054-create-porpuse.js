@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('porpuses', {
+    return queryInterface.createTable('purposes', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -9,10 +9,22 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       nominationId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+          references:{
+            model: 'roles',
+              key: 'id',
+          },
+          onUpdate: 'CASCADE',
+          onDelete: 'CASCADE',
       },
-      userId: {
-        type: Sequelize.INTEGER
+      userID: {
+        type: Sequelize.INTEGER,
+          references: {
+            model: 'users',
+              key: 'id',
+          },
+          onUpdate: 'CASCADE',
+          onDelete: 'CASCADE',
       },
       createdAt: {
         allowNull: false,
@@ -25,6 +37,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('porpuses');
+    return queryInterface.dropTable('purposes');
   }
 };

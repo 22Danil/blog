@@ -8,14 +8,20 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      firstName: {
-        type: Sequelize.STRING
+      userID: {
+        type: Sequelize.INTEGER,
+          references:{
+            model: 'users',
+              key: 'id',
+          },
+          onUpdate: 'CASCADE',
+          onDelete: 'CASCADE',
       },
       postText: {
         type: Sequelize.TEXT
       },
       titleText: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       createdAt: {
         allowNull: false,

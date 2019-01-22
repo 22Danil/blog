@@ -10,7 +10,7 @@ $ gulp
 And in another terminal / tab:
 
 ```
-$ testem -f config/testem.json
+$ testem -f configg/testem.json
 ```
 
 Then you can see if you have your new tests passing.
