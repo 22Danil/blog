@@ -75,6 +75,7 @@ export class MainUserController {
                 $http.post('/api/posts', {textPost: text[1].textContent, textTitle: $scope.textForTitle}, {headers: {token: localStorage.getItem("Token")}})
                     .then(function (result) {
                         if($scope.books){
+                            result.data.result.firstName = localStorage.getItem("Name");
                             $scope.books.push(result.data.result);
                             $scope.textForPost = "";
                             $scope.textForTitle = "";
