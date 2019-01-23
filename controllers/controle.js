@@ -1,6 +1,7 @@
 db = require(__dirname + "/../models/index");
 const jwt = require('jsonwebtoken');
 const config = require('../config/configg');
+const Op = db.Sequelize.Op;
 module.exports = {
     delUser: async function(request, response, next){
         try {
@@ -155,6 +156,7 @@ module.exports = {
             let result = await db.user.findAll({
                 where: {
                     firstName: request.body.name,
+                    [Op.and]: {email: request.body.email}
                 }
             });
             if (result.length === 0) {

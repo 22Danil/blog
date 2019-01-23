@@ -15,15 +15,22 @@ export class MyRegistration {
         $scope.Header = "";
         $scope.textBody = "";
         };
+    $scope.checkEmail = function (email) {
+        let pattern  = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return pattern.test(email);
+    };
+      this.registration = function () {
+        //$scope.Email.indexOf("@") !== -1 && $scope.Email.indexOf(".") !== -1
+        if($scope.checkEmail($scope.Email)){
+            $http.post('/registration', {name: $scope.Name, email: $scope.Email, password: $scope.Password})
+                .then(function () {
+                    $location.path("/");
+                })
+                .catch(function (result) {
+                    $scope.ErrorCode(result.status);
+                });
+        }
 
-    this.registration = function () {
-      $http.post('/registration', {name: $scope.Name, email: $scope.Email, password: $scope.Password})
-        .then(function () {
-            $location.path("/");
-        })
-        .catch(function (result) {
-            $scope.ErrorCode(result.status);
-        });
       };
       $scope.ErrorCode = function (statusCode) {
           if(statusCode === 401){

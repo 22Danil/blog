@@ -1,5 +1,4 @@
 // TODO (FRONT) сделать что бы фон изменялся под размер данных
-// TODO откатить миграции и сделать что бы нельзя было оставить поле пустым
 const jwt = require('jsonwebtoken');
 const config = require('./config/configg');
 const db = require('./models/index');

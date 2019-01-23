@@ -10,20 +10,25 @@ export class MyController {
             $scope.Header = "";
             $scope.textBody = "";
         };
-
-      this.entry = function () {
-        $http.post('/entry', {name: $scope.Name, email: $scope.Email, password: $scope.Password})
-          .then(function (result) {
-              localStorage.setItem('Token', result.data.token);
-              localStorage.setItem('Name', result.data.name);
-              localStorage.setItem('Id', result.data.id);
-              $location.path("/main");
-          })
-          .catch(function (result) {
-              $scope.ErrorCode(result.status);
-          });
+        $scope.checkEmail = function (email) {
+            let pattern  = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return pattern.test(email);
+        };
+        this.entry = function () {
+            if($scope.checkEmail($scope.Email)) {
+                $http.post('/entry', {name: $scope.Name, email: $scope.Email, password: $scope.Password})
+                    .then(function (result) {
+                        localStorage.setItem('Token', result.data.token);
+                        localStorage.setItem('Name', result.data.name);
+                        localStorage.setItem('Id', result.data.id);
+                        $location.path("/main");
+                    })
+                    .catch(function (result) {
+                        $scope.ErrorCode(result.status);
+                    });
+            }
       };
-      this.registration = function () {
+        this.registration = function () {
         $location.path("/registration");
       };
         $scope.ErrorCode = function (statusCode) {
