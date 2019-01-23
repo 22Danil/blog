@@ -1,4 +1,5 @@
 // TODO (FRONT) сделать что бы фон изменялся под размер данных
+// TODO откатить миграции и сделать что бы нельзя было оставить поле пустым
 const jwt = require('jsonwebtoken');
 const config = require('./config/configg');
 const db = require('./models/index');
@@ -78,12 +79,23 @@ app.use('/api/posts/:id', async function (request, response, next) {
 });
 
 app.get('/api/search/:title', contr.searchPost);
+
 app.put('/api/posts/:id', contr.savePost);
+
 app.delete('/api/posts/:id', contr.delPost);
+
 app.get('/api/posts', contr.allPost);
+
 app.get('/api/user/:id/posts', contr.posts);
+
 app.post('/api/posts', contr.addPost);
+
+app.get('/api/users', contr.users);
+
+app.delete('/api/users/:id', contr.checkDelUser, contr.delUser);//
+
 app.post('/entry', contr.checkEntry, contr.Entry);
+
 app.post('/registration', contr.checkRegistration, contr.registration);
 
 app.use(function (err, request, response, next) {

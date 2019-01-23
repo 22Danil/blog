@@ -2,11 +2,73 @@ db = require(__dirname + "/../models/index");
 const jwt = require('jsonwebtoken');
 const config = require('../config/configg');
 module.exports = {
-    posts: async function(request, response){
-        let result = await db.sequelize.query('SELECT posts."id", posts."userID", posts."postText", posts."titleText", users."firstName" FROM posts INNER JOIN ' +
-            'users ON posts."userID" = users."id" WHERE users."id" = ?', {replacements: [request.user.id]});
-
-        response.json({result:result});
+    delUser: async function(request, response, next){
+        try {
+            let result = await db.user.destroy({
+                where:{
+                    id: request.params.id
+                }
+            });
+            if(result === 0){
+                throw "MyError";
+            }
+            return response.json({user: request.user.firstName});
+        }
+        catch (e) {
+            next(e);
+        }
+    },
+    checkDelUser: async function(request, response, next){
+        const result = await db.purpose.findOne({
+            where: {
+                userID: request.user.id
+            }
+        });
+        const role = await db.role.findOne({
+            where: {
+                id: result.dataValues.nominationId
+            }
+        });
+        if(role.dataValues.nomination === "Admin"){
+            next();
+        }
+        else{
+            try{
+                let result = await db.user.findOne({
+                    where:{
+                        id:request.user.id
+                    }
+                });
+                if(result.dataValues.id == request.params.id){
+                    next();
+                }
+                else{
+                    next(403);
+                }
+            }
+            catch (e) {
+                next(e);
+            }
+        }
+    },
+    users: async function(request, response, next){
+        try {
+            let result = await db.sequelize.query('SELECT users."id", users."firstName" FROM users ');
+            response.json({result: result});
+        }
+        catch (e) {
+            next(e);
+        }
+    },
+    posts: async function(request, response, next){
+        try {
+            let result = await db.sequelize.query('SELECT posts."id", posts."userID", posts."postText", posts."titleText", users."firstName" FROM posts INNER JOIN ' +
+                'users ON posts."userID" = users."id" WHERE users."id" = ?', {replacements: [request.params.id]});
+            response.json({result: result});
+        }
+        catch (e) {
+            next(e);
+        }
     },
     addPost: async function(request, response, next){
         try{
@@ -17,11 +79,15 @@ module.exports = {
             next(e);
         }
     },
-    allPost: async function(request, response){
-        let result = await db.sequelize.query('SELECT posts."id", posts."userID", posts."postText", posts."titleText", users."firstName" FROM posts INNER JOIN ' +
-            'users ON posts."userID" = users."id" ');
-
-        response.json({result:result});
+    allPost: async function(request, response, next){
+        try {
+            let result = await db.sequelize.query('SELECT posts."id", posts."userID", posts."postText", posts."titleText", users."firstName" FROM posts INNER JOIN ' +
+                'users ON posts."userID" = users."id" ');
+            response.json({result: result});
+        }
+        catch (e) {
+            next(e);
+        }
     },
     delPost: async function(request, response, next){
         try{

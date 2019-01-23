@@ -19,7 +19,6 @@ export class MyRegistration {
     this.registration = function () {
       $http.post('/registration', {name: $scope.Name, email: $scope.Email, password: $scope.Password})
         .then(function () {
-            console.log("dsfdsfsd");
             $location.path("/");
         })
         .catch(function (result) {

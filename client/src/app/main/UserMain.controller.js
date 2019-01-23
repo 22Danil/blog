@@ -27,14 +27,31 @@ export class MainUserController {
         let postEditId;
         let postEditText;
 
+        $scope.userPost = function(id, name){
+            $http.get('/api/user/'+ id + '/posts', {headers: {token: localStorage.getItem("Token")}})
+                .then(function (result) {
+                    $scope.titleMain = "Записи пользователя: " + name;
+                    $scope.books = result.data.result[0];
+                })
+                .catch(function (result) {
+                    $scope.ErrorCode(result.status);
+                });
+        };
+        $scope.Users = function(){
+            $http.get('/api/users', {headers: {token: localStorage.getItem("Token")}})
+                .then(function (result) {
+                    $scope.users = result.data.result[0];
+                })
+                .catch(function (result) {
+                    $scope.ErrorCode(result.status);
+                });
+        };
         $scope.editPost = function (id, textContent){
             postEditId = id;
             postEditText = textContent;
             $scope.forEditPost = true;
-
         };
         $scope.savePost = function(id, textContent){
-            console.log(textContent);
             if(id !== postEditId){
                 $scope.ErrorCode(400);
             }
@@ -81,7 +98,7 @@ export class MainUserController {
         $scope.AllPosts = function () {
             $http.get('/api/posts', {headers: {token: localStorage.getItem("Token")}})
                 .then(function (result) {
-                    $scope.titleMain = "Записи всех пользвателей";
+                    $scope.titleMain = "Записи всех пользователей";
                     $scope.books = result.data.result[0];
                 })
                 .catch(function (result) {
@@ -113,6 +130,20 @@ export class MainUserController {
                     $scope.ErrorCode(result.status);
                 });
         };
+        $scope.userDelete = function(id, name){
+            $http.delete('/api/users/'+ id, {headers: {token: localStorage.getItem("Token")}})
+                .then(function (result) {
+                    if(result.data.user == name){
+                        $location.path("/");
+                    }
+                    else{
+                        $scope.Users();
+                    }
+                })
+                .catch(function (result) {
+                    $scope.ErrorCode(result.status);
+                });
+        };
         $scope.ErrorCode = function (statusCode) {
             if (statusCode === 403){
                 $scope.Header = "Error: " + statusCode;
@@ -135,5 +166,6 @@ export class MainUserController {
                 modal.style.display = "block";
             }
         };
+        $scope.Users();
     }
 }

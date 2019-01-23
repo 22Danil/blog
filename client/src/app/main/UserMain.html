@@ -22,8 +22,23 @@
                 <input name="name" ng-model="textForSearch"  value={{textForSearch}} type="text" placeholder="Название поста..." style="width: 135px;" >
                 <md-button class="md-raised md-cornered" ng-click="Search()" style=" margin-right: 0px">Найти</md-button>
             </md-input-container>
-
         </div>
+
+            <div id="users" >
+                <p class="stroke">Пользователи</p>
+                <md-content style="max-width: 305px; max-height: 400px" md-colors="{background: 'grey-50-0.0'}">
+                <div ng-repeat="user in users" >
+                    <md-button style="text-align: left; min-width: 100px; text-transform: none" ng-click="userPost(user.id, user.firstName)">
+                        <md-icon >person</md-icon>
+                        {{user.firstName}}
+                    </md-button>
+                    <md-button ng-click="userDelete(user.id, user.firstName)">
+                        <md-icon >delete_forever</md-icon>
+                    </md-button>
+                </div>
+                </md-content>
+            </div>
+
     </div>
     <div layout="column" style="width: 100%;">
         <md-content  flex style="height: 68%; max-height: 68%;" md-colors="{background: 'grey-50-0.0'}">
