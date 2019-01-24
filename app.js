@@ -12,6 +12,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+
+app.use(async (req, res, next) => {
+    try {
+        next();
+    } catch (e) {
+        next(e);
+    }
+});
+
 app.use('/api', async function (request, response, next) {
     try {
         let decoded = jwt.verify(request.headers.token, config.secret);
