@@ -48,7 +48,7 @@
                 <h5>Название: {{book.titleText}}  Автор: {{book.firstName}}</h5>
                     <md-input-container class="md-block" style="margin-bottom: 0px">
                         <label>Текст</label>
-                        <fieldset ng-disabled="!forEditPost">
+                        <fieldset disabled class="test{{book.id}}">
                             <textarea ng-model="book.postText" ng-bind="expression" rows="5" md-select-on-focus ></textarea>
                         </fieldset>
 

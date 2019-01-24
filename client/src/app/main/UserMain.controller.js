@@ -4,7 +4,6 @@ export class MainUserController {
     constructor ($timeout, friendsService, webDevTec, $http, $log, $location, $scope) {
         'ngInject'
 
-
         let modal = document.getElementById('myModal');
         let span = document.getElementsByClassName("close")[0];
         span.onclick = function() {
@@ -14,7 +13,6 @@ export class MainUserController {
         };
 
         $scope.titleMain = "Здесь будут ваши записи";
-        $scope.forEditPost = false;
         $scope.books = [];
         $scope.Header = "";
         $scope.textBody = "";
@@ -47,24 +45,26 @@ export class MainUserController {
                 });
         };
         $scope.editPost = function (id, textContent){
+            let text = document.getElementsByClassName("test"+id);
             postEditId = id;
             postEditText = textContent;
-            $scope.forEditPost = true;
+            text[0].attributes.removeNamedItem("disabled");
         };
         $scope.savePost = function(id, textContent){
+            let text = document.getElementsByClassName("test"+id);
             if(id !== postEditId){
                 $scope.ErrorCode(400);
             }
             else if(textContent === postEditText){
-                $scope.forEditPost = false;
+                text[0].disabled = true;
             }
             else{
                 $http.put('/api/posts/' + id, {newText: textContent, postID: id}, {headers: {token: localStorage.getItem("Token")}})
                     .then(function (result) {
-                        $scope.forEditPost = false;
+                        text[0].disabled = true;
                     })
                     .catch(function (result) {
-                        $scope.forEditPost = true;
+                        text[0].disabled = true;
                         $scope.ErrorCode(result.status);
                     })
             }
