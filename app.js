@@ -20,9 +20,7 @@ app.use(async (req, res, next) => {
         next(e);
     }
 });
-
 app.use('/api', async function (request, response, next) {
-    try {
         let decoded = jwt.verify(request.headers.token, config.secret);
         let result;
         if(request.params.id){
@@ -47,10 +45,6 @@ app.use('/api', async function (request, response, next) {
             request.user = result[0].dataValues;
             next();
         }
-    }
-    catch (e) {
-        next(e);
-    }
 });
 app.use('/api/posts/:id', async function (request, response, next) {
     const result = await db.purpose.findOne({
@@ -67,21 +61,16 @@ app.use('/api/posts/:id', async function (request, response, next) {
         next();
     }
     else{
-        try{
-            let result = await db.post.findAll({
-                where:{
-                    id:request.params.id
-                }
-            });
-            if(result[0].dataValues.userID === request.user.id){
-                next();
+        let result = await db.post.findAll({
+            where:{
+                id:request.params.id
             }
-            else{
-                next(403);
-            }
+        });
+        if(result[0].dataValues.userID === request.user.id){
+            next();
         }
-        catch (e) {
-            next(e);
+        else{
+            next(403);
         }
     }
 });

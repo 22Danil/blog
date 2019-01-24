@@ -2,70 +2,71 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
 
-
-<div layout="row" id="left" >
-    <div id="main">
-        <h1>
-            <md-button class="md-fab md-primary" aria-label="Use Android">
-                <md-icon >person</md-icon>
-            </md-button>
-            {{nameUser}}
-        </h1>
-        <md-button class="md-raised md-cornered" ng-click="Posts()">Мои записи</md-button>
-        <md-button class="md-raised md-cornered" ng-click="AllPosts()">Все записи</md-button>
-        <p></p>
-
-        <div id="search">
-            <p class="stroke">Поиск</p>
-            <md-input-container class="md-block">
-                <md-icon class="name">search</md-icon>
-                <input name="name" ng-model="textForSearch"  value={{textForSearch}} type="text" placeholder="Название поста..." style="width: 135px;" >
-                <md-button class="md-raised md-cornered" ng-click="Search()" style=" margin-right: 0px">Найти</md-button>
-            </md-input-container>
-        </div>
-
-            <div id="users" >
-                <p class="stroke">Пользователи</p>
-                <md-content style="max-width: 305px; max-height: 400px" md-colors="{background: 'grey-50-0.0'}">
-                <div ng-repeat="user in users" >
-                    <md-button style="text-align: left; min-width: 100px; text-transform: none" ng-click="userPost(user.id, user.firstName)">
-                        <md-icon >person</md-icon>
-                        {{user.firstName}}
+    <div layout="row" layout-wrap style="margin: 0px; background:#4BC0FF;">
+        <div flex="100" flex-md="30" flex-gt-md="25" id="q">
+            <div id="main">
+                <h1>
+                    <md-button class="md-fab md-primary" aria-label="Use Android" >
+                        <md-icon md-colors="{background: 'grey-50-0.0'}">person</md-icon>
                     </md-button>
-                    <md-button ng-click="userDelete(user.id, user.firstName)">
-                        <md-icon >delete_forever</md-icon>
-                    </md-button>
-                </div>
-                </md-content>
-            </div>
+                    {{nameUser}}
+                </h1>
+                <md-button class="md-raised md-cornered" ng-click="Posts()" >Мои записи</md-button>
+                <md-button class="md-raised md-cornered" ng-click="AllPosts()">Все записи</md-button>
+                <p></p>
 
-    </div>
-    <div layout="column" style="width: 100%;">
-        <md-content  flex style="height: 68%; max-height: 68%;" md-colors="{background: 'grey-50-0.0'}">
-            <div style="max-height: 100px; ">
-                <p id="titleMain" align="center">{{titleMain}}</p>
-            <div ng-repeat="book in books" id="arrow">
-                <h5>Название: {{book.titleText}}  Автор: {{book.firstName}}</h5>
-                    <md-input-container class="md-block" style="margin-bottom: 0px">
-                        <label>Текст</label>
-                        <fieldset disabled class="test{{book.id}}">
-                            <textarea ng-model="book.postText" ng-bind="expression" rows="5" md-select-on-focus ></textarea>
-                        </fieldset>
-
+                <div id="search">
+                    <p class="stroke">Поиск</p>
+                    <md-input-container class="md-block" style="margin: 0px">
+                        <md-icon class="name">search</md-icon>
+                        <input  name="name" ng-model="textForSearch"  value={{textForSearch}} type="text" placeholder="Название поста" style="width: 135px;" >
+                        <md-button class="md-raised md-cornered" ng-click="Search()" style=" margin-right: 0px; margin-left: 20px" >Найти</md-button>
                     </md-input-container>
+                </div>
 
-                    <md-button class="md-raised md-cornered" name={{book.id}} ng-click="editPost(book.id, book.postText)">Изменить</md-button>
-                    <md-button class="md-raised md-cornered" ng-click="savePost(book.id, book.postText)">Сохранить</md-button>
-                    <md-button class="md-raised md-cornered" ng-click="delPost(book.id, book.firstName)">Удалить</md-button>
-            </div>
-            </div>
-        </md-content>
+                <div id="users" >
+                    <p class="stroke">Пользователи</p>
+                    <md-content style="max-width: 100%; max-height: 100%" md-colors="{background: 'grey-50-0.0'}">
+                        <div ng-repeat="user in users" >
+                            <md-button style="text-align: left; min-width: 100px; text-transform: none" ng-click="userPost(user.id, user.firstName)">
+                                <md-icon >person</md-icon>
+                                {{user.firstName}}
+                            </md-button>
+                            <md-button ng-click="userDelete(user.id, user.firstName)">
+                                <md-icon >delete_forever</md-icon>
+                            </md-button>
+                        </div>
+                    </md-content>
+                </div>
 
-        <div id="bot">
+            </div>
+        </div>
+        <div flex="100" flex-md="70" flex-gt-md="75" id="w">
+            <md-content style="min-height: 549px" md-colors="{background: 'grey-50-0.0'}">
+                <div style="max-height: 100px; ">
+                    <p id="titleMain" align="center">{{titleMain}}</p>
+                    <div ng-repeat="book in books" id="arrow">
+                        <h5>Название: {{book.titleText}}  Автор: {{book.firstName}}</h5>
+                        <md-input-container class="md-block" style="margin-bottom: 0px">
+                            <label>Текст</label>
+                            <fieldset disabled class="test{{book.id}}">
+                                <textarea ng-model="book.postText" ng-bind="expression" rows="5" md-select-on-focus ></textarea>
+                            </fieldset>
+
+                        </md-input-container>
+
+                        <md-button class="md-raised md-cornered" name={{book.id}} ng-click="editPost(book.id, book.postText)">Изменить</md-button>
+                        <md-button class="md-raised md-cornered" ng-click="savePost(book.id, book.postText)">Сохранить</md-button>
+                        <md-button class="md-raised md-cornered" ng-click="delPost(book.id, book.firstName)">Удалить</md-button>
+                    </div>
+                </div>
+            </md-content>
+        </div>
+        <div flex="100" flex-md="100" flex-gt-md="100" id="e" style="margin-right: 10px; max-height: 100%;" >
             <div id="add">
                 <p class="stroke">Добавление новой записи</p>
-                <md-input-container style="margin-top: 5px; margin-bottom: 0px">
-                    <input type="text" ng-model="textForTitle" value={{textForTitle}} class="addPost" placeholder="Название поста..." style="width: 135px;" >
+                <md-input-container style="margin-top: 5px; ">
+                    <input type="text" ng-model="textForTitle" value={{textForTitle}} class="addPost" placeholder="Название поста" style="width: 150px;" >
                 </md-input-container>
                 <p></p>
                 <md-input-container class="md-block" style="margin-bottom: 0px">
@@ -77,7 +78,6 @@
             </div>
         </div>
     </div>
-</div>
 
     <!-- The Modal -->
     <div id="myModal" class="modal">

@@ -110,6 +110,7 @@ export class MainUserController {
             if($scope.textForSearch !== ""){
                 $http.get('/api/search/' + $scope.textForSearch, {headers: {token: localStorage.getItem("Token")}})
                     .then(function (result) {
+                        $scope.titleMain = "Результат поиска";
                         $scope.books = result.data.result[0];
                         $scope.textForSearch = "";
                     })
