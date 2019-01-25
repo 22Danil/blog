@@ -13,19 +13,13 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
-app.use(async (req, res, next) => {
-    try {
-        next();
-    } catch (e) {
-        next(e);
-    }
-});
 app.use('/api', async function (request, response, next) {
+    try {
         let decoded = jwt.verify(request.headers.token, config.secret);
         let result;
-        if(request.params.id){
+        if (request.params.id) {
             result = await db.user.findAll({
-                where:{
+                where: {
                     firstName: decoded.name,
                     [Op.and]: {id: decoded.id}
                 }
@@ -33,45 +27,54 @@ app.use('/api', async function (request, response, next) {
         }
         else {
             result = await db.user.findAll({
-                where:{
+                where: {
                     firstName: decoded.name,
                 }
             });
         }
-        if(result.length === 0){
+        if (result.length === 0) {
             next(400);
         }
-        else{
+        else {
             request.user = result[0].dataValues;
             next();
         }
+    }
+    catch (e) {
+        next(e);
+    }
 });
 app.use('/api/posts/:id', async function (request, response, next) {
-    const result = await db.purpose.findOne({
-        where: {
-            userID: request.user.id
-        }
-    });
-    const role = await db.role.findOne({
-        where: {
-            id: result.dataValues.nominationId
-        }
-    });
-    if(role.dataValues.nomination === "Admin"){
-        next();
-    }
-    else{
-        let result = await db.post.findAll({
-            where:{
-                id:request.params.id
+    try {
+        const result = await db.purpose.findOne({
+            where: {
+                userID: request.user.id
             }
         });
-        if(result[0].dataValues.userID === request.user.id){
+        const role = await db.role.findOne({
+            where: {
+                id: result.dataValues.nominationId
+            }
+        });
+        if (role.dataValues.nomination === "Admin") {
             next();
         }
-        else{
-            next(403);
+        else {
+            let result = await db.post.findAll({
+                where: {
+                    id: request.params.id
+                }
+            });
+            if (result[0].dataValues.userID === request.user.id) {
+                next();
+            }
+            else {
+                next(403);
+            }
         }
+    }
+    catch (e) {
+        next(e);
     }
 });
 
