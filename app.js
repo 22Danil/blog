@@ -1,4 +1,3 @@
-// TODO (FRONT) сделать что бы фон изменялся под размер данных
 const jwt = require('jsonwebtoken');
 const config = require('./config/configg');
 const db = require('./models/index');
