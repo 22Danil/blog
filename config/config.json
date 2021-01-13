@@ -1,9 +1,0 @@
-{
-  "development": {
-    "username": "bloguser",
-    "password": "wikiveer1997",
-    "database": "blog_db",
-    "host": "localHost",
-    "dialect": "postgres"
-  }
-}
